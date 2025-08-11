@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="03f7a635f7d84625ab7eb732dcef5858" Name="Diagram1">
+        <EntityTypeShape EntityType="WebAspDbModel.Brand" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAspDbModel.Category" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAspDbModel.OrderDetail" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAspDbModel.Order" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAspDbModel.Product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebAspDbModel.User" Width="1.5" PointX="0.75" PointY="10.625" IsExpanded="true" />
+        <AssociationConnector Association="WebAspDbModel.FK_dbo_Products_dbo_Brands_BrandId" ManuallyRouted="false" />
+        <AssociationConnector Association="WebAspDbModel.FK_dbo_Products_dbo_Categories_CategoryId" ManuallyRouted="false" />
+        <AssociationConnector Association="WebAspDbModel.FK_dbo_OrderDetails_dbo_Orders_OrderId" ManuallyRouted="false" />
+        <AssociationConnector Association="WebAspDbModel.FK_dbo_OrderDetails_dbo_Products_ProductId" ManuallyRouted="false" />
+        <AssociationConnector Association="WebAspDbModel.FK_dbo_OrderDetails_dbo_Users_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="WebAspDbModel.FK_dbo_Orders_dbo_Users_UserId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

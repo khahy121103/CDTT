@@ -1,0 +1,39 @@
+﻿@model VoPhanKhaHy_CDTT.Models.HomeModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="container">
+
+        <nav class="row">
+            @foreach (var item in Model.ListCategory)
+            {
+                <div class="col-md-3">
+
+                    <div class="card card-category">
+                        <div class="img-wrap" style="background: #ffd7d7">
+                            <img src="~/content/images/items/@item.Image">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="#">@item.Name</a></h4>
+                            <ul class="list-menu">
+                                <li><a href="">Unisex T shirts</a></li>
+                                <li><a href="">Casual shirts</a></li>
+                                <li><a href="">Scherf Ice cream</a></li>
+                                <li><a href="">Another category</a></li>
+                                <li><a href="">Great items name</a></li>
+                                <li><a href="">Great items name</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> <!-- col.// -->
+            }
+        </nav> <!-- row.// -->
+
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->

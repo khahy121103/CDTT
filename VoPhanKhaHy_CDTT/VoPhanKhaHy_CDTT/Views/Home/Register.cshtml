@@ -1,0 +1,109 @@
+﻿@model VoPhanKhaHy_CDTT.Context.User
+
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="card mx-auto" style="max-width:520px;">
+        <article class="card-body">
+            <header class="mb-4"><h4 class="card-title">Đăng ký</h4></header>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label>Họ</label>
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col form-group">
+                        <label>Tên</label>
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    <small class="form-text text-muted">Chúng tôi sẽ không bao giờ chia sẻ email của bạn với bất kỳ ai khác.</small>
+                </div>
+                <!--<div class="form-group">
+                    <label class="custom-control custom-radio custom-control-inline">
+                        <input class="custom-control-input" checked="" type="radio" name="gender" value="option1">
+                        <span class="custom-control-label"> Male </span>
+                    </label>
+                    <label class="custom-control custom-radio custom-control-inline">
+                        <input class="custom-control-input" type="radio" name="gender" value="option2">
+                        <span class="custom-control-label"> Female </span>
+                    </label>
+                </div>--> <!-- form-group end.// -->
+                <!--<div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>City</label>
+                        <input type="text" class="form-control">
+                    </div>--> <!-- form-group end.// -->
+                <!--<div class="form-group col-md-6">
+                    <label>Country</label>
+                    <select id="inputState" class="form-control">
+                        <option> Choose...</option>
+                        <option>Uzbekistan</option>
+                        <option>Russia</option>
+                        <option selected="">United States</option>
+                        <option>India</option>
+                        <option>Afganistan</option>
+                    </select>
+                </div>--> <!-- form-group end.// -->
+                <!--</div>--> <!-- form-row.// -->
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Mật khẩu</label>
+                        <input id="password" name="Password" class="form-control" type="password" />
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nhập lại mật khẩu</label>
+                        <input id="repeatPassword" name="RepeatPassword" class="form-control" type="password" />
+                        <small id="passwordMismatch" class="text-danger" style="display:none;">Mật khẩu không khớp!</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block" onclick="return validatePasswords()"> Đăng ký </button>
+                </div>
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox"> <input type="checkbox" class="custom-control-input" checked=""> <div class="custom-control-label"> Tôi đồng ý với các <a href="#">điều khoản và điều kiện</a>  </div> </label>
+                </div> <!-- form-group end.// -->
+            }
+        </article>
+    </div>
+    <p class="text-center mt-4">Bạn đã có tài khoản? <a href="">Đăng nhập</a></p>
+    <br><br>
+</section>
+
+<script>
+    const passwordField = document.getElementById("password");
+    const repeatPasswordField = document.getElementById("repeatPassword");
+    const passwordMismatchMessage = document.getElementById("passwordMismatch");
+
+    // Kiểm tra mỗi khi người dùng nhập vào ô "Nhập lại mật khẩu"
+    repeatPasswordField.addEventListener("input", function () {
+        if (repeatPasswordField.value !== passwordField.value) {
+            passwordMismatchMessage.style.display = "block"; // Hiển thị thông báo lỗi
+        } else {
+            passwordMismatchMessage.style.display = "none"; // Ẩn thông báo lỗi
+        }
+    });
+
+    // Kiểm tra lại khi nhấn nút Submit
+    function validatePasswords() {
+        if (repeatPasswordField.value !== passwordField.value) {
+            passwordMismatchMessage.style.display = "block";
+            return false; // Ngăn không cho gửi form
+        }
+        return true; // Cho phép gửi form
+    }
+</script>
+<!-- ========================= SECTION CONTENT END// ========================= -->

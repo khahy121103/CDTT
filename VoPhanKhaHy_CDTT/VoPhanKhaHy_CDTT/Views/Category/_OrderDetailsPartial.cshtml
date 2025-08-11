@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "_OrderDetailsPartial";
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Tổng tiền</th>
+            <th>Ngày đặt</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.Quantity</td>
+                <td>@String.Format("{0:N0} VNĐ", item.Price)</td>
+                <td>@String.Format("{0:N0} VNĐ", item.TotalPrice)</td>
+                <td>@item.CreatedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.Order>
+
+@{
+    ViewBag.Title = "ListOrder";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        // Hiển thị thông báo từ TempData (nếu có)
+        @if (TempData["Success"] != null)
+        {
+           <Text>
+               toastr.success("@TempData["Success"]");
+           </Text>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+           <Text>
+               toastr.error("@TempData["Error"]");
+           </Text>
+        }
+
+        // Xử lý sự kiện thay đổi trạng thái
+        $(document).on('change', '.change-status', function () {
+            var $this = $(this);
+            var orderId = $this.data("id");
+            var newStatus = $this.val();
+
+            // Lấy giá trị ban đầu của select
+            var originalStatus = $this.data("original-status");
+
+            // Kiểm tra xem trạng thái có thay đổi hay không
+            if (newStatus != originalStatus) {
+                $.ajax({
+                    url: '@Url.Action("UpdateStatus", "Order")',
+                    type: 'POST',
+                    data: {
+                        id: orderId,
+                        status: newStatus
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.success("Cập nhật trạng thái thành công!");
+                            // Cập nhật trạng thái ban đầu sau khi thành công
+                            $this.data("original-status", newStatus);
+                        } else {
+                            toastr.error("Cập nhật trạng thái thất bại. Vui lòng thử lại.");
+                            // Khôi phục trạng thái ban đầu nếu thất bại
+                            $this.val(originalStatus);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Đã xảy ra lỗi. Vui lòng thử lại.");
+                        // Khôi phục trạng thái ban đầu nếu xảy ra lỗi
+                        $this.val(originalStatus);
+                    }
+                });
+            }
+        });
+
+        // Xử lý phân trang
+        $(document).on("click", ".pagination a", function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+
+            $.get(url, function (data) {
+                $("#ListOrder").html(data);
+            });
+        });
+    });
+    </script>
+
+}
+<div id="ListOrder">
+    @Html.Partial("_ListOrder", Model)
+</div>

@@ -1,0 +1,100 @@
+﻿@model VoPhanKhaHy_CDTT.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Chi tiết đơn hàng</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li class="breadcrumb-item active">Order Details</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3>Thông tin đơn hàng</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Mã đơn hàng:</strong> @Model.Order.Id</p>
+                    <p><strong>Ngày tạo:</strong> @Model.Order.CreatedAt</p>
+                    <p>
+                        <strong>Trạng thái:</strong>
+                        @switch (@Model.Order.Status)
+                        {
+                            case 0:
+                                <span class="badge badge-danger">Giao hàng thất bại</span>
+                                break;
+                            case 1:
+                                <span class="badge badge-warning">Đang chờ xử lý</span>
+                                break;
+                            case 2:
+                                <span class="badge badge-success">Đã xác nhận</span>
+                                break;
+                            case 3:
+                                <span class="badge badge-info">Đang vận chuyển</span>
+                                break;
+                            case 4:
+                                <span class="badge badge-primary">Giao hàng thành công</span>
+                                break;
+                            default:
+                                <span class="badge badge-secondary">Không xác định</span>
+                                break;
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h3>Thông tin khách hàng</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Họ và tên:</strong> @Model.User.LastName @Model.User.FirstName</p>
+                    <p><strong>Email:</strong> @Model.User.Email</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3>Danh sách sản phẩm</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                                <th>Tổng giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@String.Format("{0:C}", item.Price)</td>
+                                    <td>@String.Format("{0:C}", item.TotalPrice)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

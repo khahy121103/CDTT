@@ -1,0 +1,142 @@
+﻿@model PagedList.IPagedList<VoPhanKhaHy_CDTT.Context.Brand>
+@using PagedList
+@using PagedList.Mvc
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý thương hiệu</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Thuơg hiệu</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+
+                    <div class="card-tools d-flex">
+                        <!-- Nút Thêm mới sản phẩm -->
+                        <a href="@Url.Action("Create", "Brand")" class="btn btn-primary btn-sm mr-2">
+                            <i class="fas fa-plus"></i> Thêm mới thương hiệu
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tên thương hiệu</th>
+                                    <th>Logo</th>
+                                    <th>Hiển thị</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Ngày cập nhật</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="brandTableBody">
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                        <td>
+                                            <img src="@Url.Content("~/Content/img/items/" + item.Image)" alt="@item.Image" class="img-thumbnail" style="width: 100px;">
+                                        </td>
+                                        <td>
+                                            @if (item.ShowOnHomePage == true)
+                                            {
+                                                <button class="btn btn-success btn-sm toggle-show-home" data-id="@item.Id" data-state="false" style="white-space: nowrap;">
+                                                    <i class="fas fa-eye"></i> Hiện
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-danger btn-sm toggle-hide-home" data-id="@item.Id" data-state="true" style="white-space: nowrap;">
+                                                    <i class="fas fa-eye-slash"></i> Ẩn
+                                                </button>
+                                            }
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i> Sửa
+                                            </a>
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <nav aria-label="Pagination" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">
+                                    &laquo; Trước
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&laquo; Trước</span>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            if (i == Model.PageNumber)
+                            {
+                                <li class="page-item active">
+                                    <span class="page-link">@i</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@i">@i</a>
+                                </li>
+                            }
+                        }
+
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(Model.PageNumber + 1)" aria-label="Next">
+                                    Tiếp theo
+                                    &raquo;
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">Tiếp theo &raquo;</span>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</div>

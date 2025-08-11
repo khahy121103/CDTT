@@ -1,0 +1,135 @@
+﻿@model VoPhanKhaHy_CDTT.Models.ProductViewModel
+@using VoPhanKhaHy_CDTT.Models
+
+@{
+    ViewBag.Title = "Thêm sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Thêm sản phẩm mới</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li class="breadcrumb-item active">Thêm sản phẩm mới</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="form-group">
+                                <label for="Name">Tên sản phẩm</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sản phẩm" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Image">Hình ảnh</label>
+                                <input type="file" name="image" class="form-control-file" />
+                                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="CategoryId">Danh mục</label>
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.CategoryId, Model.Categories, "Chọn danh mục", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="BrandId">Thương hiệu</label>
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.BrandId, Model.Brands, "Chọn thương hiệu", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ShortDes">Mô tả ngắn</label>
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.ShortDes, new { @class = "form-control", placeholder = "Nhập mô tả ngắn", rows = 3 })
+                                    @Html.ValidationMessageFor(model => model.ShortDes, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ShowOnHomePage">Hiển thị trên trang chủ</label>
+                                <div class="col-md-10">
+                                    @Html.CheckBox("ShowOnHomePage", Model.ShowOnHomePage ?? false)
+                                    @Html.ValidationMessageFor(model => model.ShowOnHomePage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="TypeId">Kiểu hiển thị</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.TypeId, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập kiểu hiển thị" } })
+                                    @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="FullDescription">Mô tả chi tiết</label>
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.FullDescription, new { @class = "form-control", placeholder = "Nhập mô tả chi tiết", rows = 5 })
+                                    @Html.ValidationMessageFor(model => model.FullDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Price">Giá</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập giá" } })
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="PriceDiscount">Giá khuyến mãi</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PriceDiscount, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập giá khuyến mãi" } })
+                                    @Html.ValidationMessageFor(model => model.PriceDiscount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Slug">Slug</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control", placeholder = "ten-san-pham" } })
+                                    @Html.ValidationMessageFor(model => model.Slug, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                                    <a href="@Url.Action("ListProduct", "Product")" class="btn btn-secondary">Quay lại</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

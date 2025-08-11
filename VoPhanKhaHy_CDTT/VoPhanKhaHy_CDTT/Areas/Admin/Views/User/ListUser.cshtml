@@ -1,0 +1,38 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.User>
+
+@{
+    ViewBag.Title = "ListUser";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        // Kiểm tra nếu có thông báo thành công hoặc lỗi
+        @if (TempData["Success"] != null)
+        {
+           <Text>
+               toastr.success("@TempData["Success"]");
+           </Text>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+           <Text>
+        toastr.error("@TempData["Error"]");
+           </Text>
+        }
+        $(document).on("click", ".pagination a", function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+
+            $.get(url, function (data) {
+                $("#ListUser").html(data);
+            });
+        });
+    });
+    </script>
+
+}
+<div id="ListUser">
+    @Html.Partial("_ListUser", Model)
+</div>

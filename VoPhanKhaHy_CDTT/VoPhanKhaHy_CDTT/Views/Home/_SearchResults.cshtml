@@ -1,0 +1,22 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.Product>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">Không tìm thấy kết quả phù hợp.</p>
+}
+else
+{
+<ul class="list-group">
+    @foreach (var product in Model)
+    {
+        <li class="list-group-item d-flex align-items-center">
+            <img src="~/content/images/items/@product.Image" alt="@product.Name" class="img-thumbnail" style="width: 100px; height: auto; margin-right: 15px;" />
+            <div>
+                <a href="/Product/Detail/@product.Id">@product.Name</a>
+                <p class="text-muted">@product.ShortDes</p>
+                <p class="text-muted">Giá: @product.Price</p>
+            </div>
+        </li>
+    }
+</ul>
+}

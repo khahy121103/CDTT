@@ -1,0 +1,162 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.Product>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý sản phẩm</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Sản phẩm</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+
+                    <div class="card-tools d-flex">
+                        <!-- Nút Thêm mới sản phẩm -->
+                        <a href="@Url.Action("Create", "Product")" class="btn btn-primary btn-sm mr-3">
+                            <i class="fas fa-plus"></i> Thêm mới
+                        </a>
+                        <a href="@Url.Action("ExportExcel", "Product")" class="btn btn-success btn-sm mr-3">
+                            <i class="fas fa-file-excel"></i> Export Excel
+                        </a>
+                        <a href="@Url.Action("ExportPDF", "Product")" class="btn btn-danger btn-sm mr-3">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </a>
+                        <a href="@Url.Action("ListTrash", "Product")" class="btn btn-danger btn-sm mr-3">
+                            <i class="fas fa-trash-alt"></i> Thùng rác
+                        </a>
+
+                        <!-- Form nhập Excel -->
+                        <form action="@Url.Action("ImportExcel", "Product", new { area = "Admin" })" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                            @Html.AntiForgeryToken()
+                            <input type="file" name="file" class="form-control-file mr-3" />
+                            <button type="submit" class="btn btn-success btn-sm" style="white-space: nowrap;">
+                                <i class="fas fa-upload"></i> Import Excel
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card-body" id="product-list">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tên</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Danh mục</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Mô tả ngắn</th>
+                                    <th>Hiển thị</th>
+                                    <th>Mô tả</th>
+                                    <th>Giá</th>
+                                    <th>Sale</th>
+                                    <th>Kiểu hiển thị</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Ngày cập nhật</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                        <td>
+                                            <img src="@Url.Content("~/Content/img/items/" + item.Image)" alt="@item.Image" class="img-thumbnail" style="width: 200px;">
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.CategoryId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.BrandId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ShortDes)</td>
+                                        <td>
+                                            @if (item.ShowOnHomePage == true)
+                                            {
+                                                <button class="btn btn-success btn-sm toggle-show-home" data-id="@item.Id" data-state="false" style="white-space: nowrap;">
+                                                    <i class="fas fa-eye"></i> Hiện
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-danger btn-sm toggle-hide-home" data-id="@item.Id" data-state="true" style="white-space: nowrap;">
+                                                    <i class="fas fa-eye-slash"></i> Ẩn
+                                                </button>
+                                            }
+                                        </td>
+
+
+
+
+                                        <td>@Html.DisplayFor(modelItem => item.FullDescription)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PriceDiscount)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TypeId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
+
+                                        <td>
+                                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-warning" style="font-size: 12px;">
+                                                <i class="fas fa-edit"></i> Sửa
+                                            </a>
+                                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-sm btn-info" style="font-size: 12px;">
+                                                <i class="fas fa-info-circle"></i> Chi tiết
+                                            </a>
+                                            <a href="@Url.Action("Trash", new { id = item.Id })" class="btn btn-sm btn-danger" style="font-size: 12px;">
+                                                <i class="fas fa-trash"></i> Vứt
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Phân trang đơn giản -->
+                <nav aria-label="Pagination" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1" aria-label="First">
+                                &laquo; Đầu
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=2">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=3">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=4">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=5">5</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=5" aria-label="Last">
+                                Cuối &raquo;
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </section>
+</div>
+

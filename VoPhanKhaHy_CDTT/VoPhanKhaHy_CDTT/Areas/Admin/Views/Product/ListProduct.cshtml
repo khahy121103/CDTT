@@ -1,0 +1,110 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.Product>
+
+@{
+    ViewBag.Title = "ListProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        // Kiểm tra nếu có thông báo thành công hoặc lỗi
+        @if (TempData["Success"] != null)
+        {
+            <Text>
+                toastr.success("@TempData["Success"]");
+            </Text>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <Text>
+                toastr.error("@TempData["Error"]");
+            </Text>
+        }
+                // Xử lý khi bấm nút "Hiện"
+       $(document).on('click', '.toggle-show-home', function () {
+    var productId = $(this).data('id');
+    var button = $(this);
+
+    $.ajax({
+        url: '@Url.Action("UpdateShowOnHomePage", "Product")',
+        type: 'POST',
+        data: {
+            id: productId,
+            showOnHomePage: false // Đặt trạng thái là Ẩn
+        },
+        success: function (response) {
+            if (response.success) {
+                button.hide();
+                button.closest('td').find('.toggle-hide-home').show();
+                toastr.success('Đã chuyển sang trạng thái Ẩn!');
+            } else {
+                toastr.error('Không thể cập nhật trạng thái.');
+            }
+        },
+        error: function () {
+            toastr.error('Có lỗi xảy ra khi cập nhật!');
+        }
+    });
+});
+
+// Xử lý khi bấm nút "Ẩn"
+       $(document).on('click', '.toggle-hide-home', function () {
+           var productId = $(this).data('id');
+    var button = $(this);
+
+    $.ajax({
+        url: '@Url.Action("UpdateShowOnHomePage", "Product")',
+        type: 'POST',
+        data: {
+            id: productId,
+            showOnHomePage: true // Đặt trạng thái là Hiện
+        },
+        success: function (response) {
+            if (response.success) {
+                button.hide();
+                button.closest('td').find('.toggle-show-home').show();
+                toastr.success('Đã chuyển sang trạng thái Hiện!');
+            } else {
+                toastr.error('Không thể cập nhật trạng thái.');
+            }
+        },
+        error: function () {
+            toastr.error('Có lỗi xảy ra khi cập nhật!');
+        }
+    });
+});
+
+    // AJAX cho việc nhập dữ liệu Excel
+    $.ajax({
+        url: '@Url.Action("ImportExcel", "Product")',
+        type: 'POST',
+        data: formData, // formData phải được khai báo trước đó
+        contentType: false,
+        processData: false,
+        headers: {
+            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+        },
+        success: function (response) {
+            toastr.success("Nhập dữ liệu thành công!");
+        },
+        error: function () {
+            toastr.error("Lỗi khi nhập dữ liệu!");
+        }
+    });
+    });
+
+    $(document).on("click", ".pagination a", function (e) {
+        e.preventDefault();
+        var url = $(this).attr("href");
+
+        $.get(url, function (data) {
+            $("#ListProduct").html(data);
+        });
+    });
+    </script>
+
+}
+<div id="ListProduct">
+    @Html.Partial("_ListProduct", Model)
+</div>

@@ -1,0 +1,103 @@
+﻿@model VoPhanKhaHy_CDTT.Models.ProductViewModel
+@using VoPhanKhaHy_CDTT.Models
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="text-dark">Chi tiết sản phẩm</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li class="breadcrumb-item active">Chi tiết sản phẩm</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between mb-4">
+                        <div>
+                            <a href="@Url.Action("ListProduct", "Product")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Trở về
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Edit", "Product", new { id = Model.Id })" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Phần hiển thị thông tin sản phẩm -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h5>Tên sản phẩm:</h5>
+                                <p class="lead">@Model.Name</p>
+                            </div>
+
+                            <div class="form-group">
+                                <h5>Danh mục:</h5>
+                                <p>@Model.CategoryName</p>  <!-- Hiển thị tên danh mục -->
+                            </div>
+
+                            <div class="form-group">
+                                <h5>Thương hiệu:</h5>
+                                <p>@Model.BrandName</p>  <!-- Hiển thị tên thương hiệu -->
+                            </div>
+
+                            <div class="form-group">
+                                <h5>Mô tả ngắn:</h5>
+                                <p>@Model.ShortDes</p>
+                            </div>
+
+                            <div class="form-group">
+                                <h5>Giá:</h5>
+                                <p class="text-success">@Model.Price</p>
+                            </div>
+
+                            <div class="form-group">
+                                <h5>Giảm giá:</h5>
+                                <p class="text-danger">@Model.PriceDiscount</p>
+                            </div>
+
+                            <div class="form-group">
+                                <h5>Mô tả đầy đủ:</h5>
+                                <p>@Model.FullDescription</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <h5>Hình ảnh:</h5>
+                                @if (!string.IsNullOrEmpty(Model.Image))
+                                {
+                                    <img src="@Url.Content("~/Content/img/items/" + Model.Image)" class="img-fluid img-thumbnail" alt="Product Image" style="width: 200px;">
+                                }
+                                else
+                                {
+                                    <p class="text-muted">No image available.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phần hiển thị các nút Back và Edit ở trên cùng -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

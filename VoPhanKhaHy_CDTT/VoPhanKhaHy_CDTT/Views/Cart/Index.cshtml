@@ -1,0 +1,438 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Models.CartModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    // Tạo mã đơn hàng duy nhất dựa trên thời gian hiện tại
+    //let currentOrderDescription = "PNT" + new Date().getTime();
+    let currentOrderDescription = "PNT1737114263762";
+
+    $(function () {
+        // Khởi tạo sự kiện khi trang được tải
+        initCartEventHandlers();
+        updateCartSummary();
+    });
+
+    /**
+     * Khởi tạo các sự kiện cho giỏ hàng
+     */
+    function initCartEventHandlers() {
+        // Xử lý sự kiện xóa sản phẩm khỏi giỏ hàng
+        $(".removecart").click(handleRemoveCart);
+
+        // Xử lý sự kiện tăng/giảm hoặc nhập số lượng sản phẩm
+        $(".quantity-plus").click(handleQuantityPlus);
+        $(".quantity-minus").click(handleQuantityMinus);
+        $(".quantity-input").on("blur", handleQuantityInput);
+
+        // Kiểm tra trạng thái đăng nhập và tạo mã QR
+        $(document).on("click", "#generateQR", handleGenerateQR);
+    }
+
+    /**
+     * Xử lý xóa sản phẩm khỏi giỏ hàng
+     */
+    function handleRemoveCart() {
+        const productId = $(this).data("product-id");
+        const model = { Id: productId };
+
+        sendAjaxRequest('/Cart/Remove', 'POST', model, function (data) {
+            if (data.Message === "Xóa sản phẩm thành công") {
+                $(`#product-${productId}`).remove();
+                $('#CartCount').text(data.Count);
+                updateCartSummary();
+            } else {
+                alert("Có lỗi xảy ra: " + data.Error);
+            }
+        }, function () {
+            alert("Lỗi khi xóa sản phẩm khỏi giỏ hàng!");
+        });
+    }
+
+    /**
+     * Xử lý tăng số lượng sản phẩm
+     */
+    function handleQuantityPlus() {
+        const productId = $(this).data("product-id");
+        const quantityInput = $(`#quantity-${productId}`);
+        const currentQuantity = parseInt(quantityInput.val()) || 0;
+        updateQuantity(productId, currentQuantity + 1);
+    }
+
+    /**
+     * Xử lý giảm số lượng sản phẩm
+     */
+    function handleQuantityMinus() {
+        const productId = $(this).data("product-id");
+        const quantityInput = $(`#quantity-${productId}`);
+        const currentQuantity = parseInt(quantityInput.val()) || 0;
+        if (currentQuantity > 1) {
+            updateQuantity(productId, currentQuantity - 1);
+        }
+    }
+
+    /**
+     * Xử lý nhập số lượng sản phẩm trực tiếp
+     */
+    function handleQuantityInput() {
+        const productId = $(this).data("product-id");
+        const newQuantity = parseInt($(this).val()) || 0;
+        if (newQuantity > 0) {
+            updateQuantity(productId, newQuantity);
+        } else {
+            toastr.warning("Số lượng phải lớn hơn 0");
+        }
+    }
+
+    /**
+     * Cập nhật số lượng sản phẩm trong giỏ hàng
+     */
+    function updateQuantity(productId, newQuantity) {
+        const model = { Id: productId, Quantity: newQuantity };
+        sendAjaxRequest('/Cart/UpdateQuantity', 'POST', model, function (data) {
+            if (data.Success) {
+                $(`#quantity-${productId}`).val(newQuantity);
+                updateCartSummary();
+            } else {
+                toastr.warning("Không thể cập nhật số lượng sản phẩm.");
+            }
+        }, function () {
+            toastr.error("Lỗi khi cập nhật số lượng sản phẩm.");
+        });
+    }
+
+    /**
+     * Cập nhật tóm tắt giỏ hàng (giá tổng, giảm giá, giá cuối)
+     */
+    function updateCartSummary() {
+        sendAjaxRequest('/Cart/GetCartSummary', 'GET', null, function (data) {
+            $('#totalPrice').text(formatCurrency(data.TotalPrice) + ' VND');
+            $('#discount').text(formatCurrency(data.Discount) + ' VND');
+            $('#finalPrice').text(formatCurrency(data.FinalPrice) + ' VND');
+        }, function () {
+            console.error("Lỗi khi lấy thông tin giỏ hàng!");
+        });
+    }
+
+    /**
+     * Định dạng số tiền theo kiểu Việt Nam Đồng
+     */
+    function formatCurrency(amount) {
+        const formattedAmount = parseFloat(amount).toFixed(2);
+        const parts = formattedAmount.endsWith('.00') ? [formattedAmount.replace('.00', '')] : formattedAmount.split('.');
+        parts[0] = parts[0].replace(/\d(?=(\d{3})+\b)/g, '$&,');
+        return parts.join('.');
+    }
+
+    /**
+     * Xử lý tạo mã QR thanh toán
+     */
+    function handleGenerateQR() {
+        sendAjaxRequest('/Home/CheckLoginStatus', 'GET', null, function (isLoggedIn) {
+            if (!isLoggedIn) {
+                alert("Bạn cần đăng nhập trước khi tạo đơn hàng!");
+                window.location.href = '/Home/Login';
+                return;
+            }
+
+            const totalPrice = parseFloat($("#finalPrice").text().replace(/,/g, ''));
+            if (isNaN(totalPrice) || totalPrice <= 0) {
+                toastr.warning("Chưa có sản phẩm nào trong giỏ hàng!");
+                return;
+            }
+
+            generateQR(totalPrice);
+        }, function () {
+            console.error("Không thể kiểm tra trạng thái đăng nhập. Vui lòng thử lại!");
+        });
+    }
+
+    /**
+     * Tạo và hiển thị mã QR thanh toán
+     */
+    function generateQR(totalPrice) {
+        const accountNo = "0702775390";
+        const accountName = "PHANNGOCTHUONG";
+
+        const qrUrl = `https://img.vietqr.io/image/MB-${accountNo}-compact2.png?amount=${totalPrice.toFixed(2)}&accountName=${encodeURIComponent(accountName)}&addInfo=${encodeURIComponent(currentOrderDescription)}`;
+        $("#qrImage").attr("src", qrUrl);
+        $("#qrModal").modal("show");
+
+        startCountdown(5 * 60, "#countdown");
+        checkPayment(currentOrderDescription);
+
+        setTimeout(function () {
+            $("#qrModal .modal-body").html(`
+            <div class="text-center">
+                <i class="fa fa-exclamation-circle text-warning" style="font-size: 50px;"></i>
+                <p class="mt-3 h5">Thời gian thanh toán đã hết. Vui lòng thử lại!</p>
+            </div>
+        `);
+            setTimeout(function () {
+                $("#qrModal").modal("hide");
+                window.location.href = '/Cart';
+            }, 5000);
+        }, 5 * 60 * 1000);
+    }
+
+    /**
+     * Bắt đầu đếm ngược thời gian thanh toán
+     */
+    function startCountdown(duration, displaySelector) {
+        let timer = duration;
+        const countdownInterval = setInterval(function () {
+            const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
+            const seconds = (timer % 60).toString().padStart(2, '0');
+            $(displaySelector).text(`${minutes}:${seconds}`);
+
+            if (--timer < 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+    }
+
+    /**
+     * Kiểm tra trạng thái thanh toán bằng mô tả đơn hàng
+     */
+    function checkPayment(orderDescription) {
+        const checkUrl = "https://script.googleusercontent.com/macros/echo?user_content_key=yA79TOofcJsZC2SKsO_1AQJKjFLWKJ4ZluW5ty2AZJMAsgATYRJG1BkmHM2JYRU_Dz2po1u5jzwEjBNhNrgwZlFrO3_jfygqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnNmCrnDXmHNaaVRo6CZ-aukyyvBNz-V-4NSlEt-icjr8SJRuuDZ-rpv_SHrXctfxCVhjwH1z6CHsOYFZAcojSkgECdl60pAblNz9Jw9Md8uu&lib=Mi60UgAAWkNk2jxMHCxDhw4kSKk6uq8lw";
+        let interval;
+
+        $("#qrModal").on("shown.bs.modal", function () {
+            interval = setInterval(function () {
+                $.getJSON(checkUrl, function (response) {
+                    const rows = response.data || [];
+                    rows.forEach((row) => {
+                        const extractedCode = row.description?.match(/PNT\d+/)?.[0] || "";
+                        if (extractedCode === orderDescription) {
+                            clearInterval(interval);
+                            showSuccessModal();
+                        }
+                    });
+                }).fail(function () {
+                    console.error("Không thể lấy dữ liệu từ URL.");
+                });
+            }, 500);
+        });
+
+        $("#qrModal").on("hidden.bs.modal", function () {
+            clearInterval(interval);
+            window.location.href = '/Cart';
+        });
+    }
+
+    /**
+     * Hiển thị thông báo thanh toán thành công
+     */
+    function showSuccessModal() {
+        sendAjaxRequest('/Cart/CreatOrder', 'POST', { currentOrderDescription }, function (response) {
+            if (response.OrderId) {
+                $("#qrModal .modal-body").html(`
+                <div class="text-center">
+                    <i class="fa fa-check-circle text-success" style="font-size: 50px;"></i>
+                    <p class="mt-3 h5">Thanh toán thành công!</p>
+                </div>
+            `);
+
+                sendAjaxRequest('/Cart/ClearCart', 'POST', null, function () {
+                    setTimeout(() => {
+                        $("#qrModal").modal("hide");
+                        window.location.href = "/Home";
+                    }, 3000);
+                });
+            } else {
+                console.error("Lỗi tạo đơn hàng.");
+            }
+        }, function () {
+            console.error("Lỗi khi tạo đơn hàng.");
+        });
+    }
+
+    /**
+     * Hàm tiện ích gửi yêu cầu AJAX
+     */
+    function sendAjaxRequest(url, method, data, successCallback, errorCallback) {
+        $.ajax({
+            url: url,
+            type: method,
+            data: data ? JSON.stringify(data) : null,
+            contentType: "application/json; charset=utf-8",
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+</script>
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="container">
+
+        <div class="row">
+            <main class="col-md-9">
+                <div class="card">
+
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col" width="120">Số lượng</th>
+                                <th scope="col" width="120">Đơn giá</th>
+                                <th scope="col" class="text-right" width="200"> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr id="product-@item.Product.Id">
+                                        <td>
+                                            <figure class="itemside">
+                                                <div class="aside"><img src="~/content/images/items/@item.Product.Image" class="img-sm"></div>
+                                                <figcaption class="info">
+                                                    <a href="#" class="title text-dark">@item.Product.Name</a>
+                                                    <p class="text-muted small">@item.Product.ShortDes</p>
+                                                </figcaption>
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3 input-spinner">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-light quantity-plus" data-product-id="@item.Product.Id">+</button>
+                                                </div>
+                                                <input type="text" id="quantity-@item.Product.Id" class="form-control quantity-input" value="@item.Quantity" data-product-id="@item.Product.Id">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-light quantity-minus" data-product-id="@item.Product.Id">−</button>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <div class="price-wrap">
+                                                <var class="price">@item.Product.Price</var>
+                                            </div> <!-- price-wrap .// -->
+                                        </td>
+                                        <td class="text-right">
+                                            <input type="hidden" value="@item.Product.Id" id="productid" />
+                                            <a data-original-title="Save to Wishlist" title="" href="#" class="btn btn-light" data-toggle="tooltip">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                            <!-- Nút xóa có thêm data-product-id để xác định sản phẩm -->
+                                            <a href="#" class="btn btn-light removecart" data-product-id="@item.Product.Id">Xoá</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th>Không có sản phẩm trong giỏ hàng</th>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="card-body border-top">
+                        <a id="generateQR" class="btn btn-primary float-md-right"> Đặt hàng <i class="fa fa-chevron-right"></i> </a>
+                        <a href="Home" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Mua thêm sản phẩm </a>
+                    </div>
+                </div> <!-- card.// -->
+
+                <div class="alert alert-success mt-3">
+                    <p class="icontext"><i class="icon text-success fa fa-truck"></i> Giao hàng miễn phí trong vòng 3-5 ngày</p>
+                </div>
+                <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-center" id="qrModalLabel">Thanh toán đơn hàng</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img id="qrImage" src="" alt="QR Code" class="img-fluid">
+                                <p class="mt-3">Quét mã QR để thanh toán</p>
+                                <p class="mt-3">Mã QR sẽ tự động đóng khi bạn hoàn tất thanh toán</p>
+                                <p class="mt-3 text-danger">Thời gian còn lại: <span id="countdown">05:00</span></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </main> <!-- col.// -->
+            <aside class="col-md-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Có phiếu giảm giá?</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="" placeholder="Mã giảm giá">
+                                    <span class="input-group-append">
+                                        <button class="btn btn-primary">Áp dụng</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- card-body.// -->
+                </div>  <!-- card .// -->
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Tổng giá:</dt>
+                            <dd class="text-right" id="totalPrice">0</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Giảm giá:</dt>
+                            <dd class="text-right" id="discount">0</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Tổng cộng:</dt>
+                            <dd class="text-right h6" id="finalPrice"><strong>0</strong></dd>
+                        </dl>
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="~/content/images/misc/payments.png" height="26">
+                        </p>
+
+                    </div> <!-- card-body.// -->
+                </div>  <!-- card .// -->
+            </aside> <!-- col.// -->
+        </div>
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name border-top padding-y">
+    <div class="container">
+        <h6>Chính sách thanh toán và hoàn tiền</h6>
+        <p>
+            Điều rất quan trọng là khách hàng phải chú ý đến việc hấp thụ của khách hàng, nhưng thực tế là như vậy
+            theo thời gian chúng xảy ra như một cơn chuyển dạ và đau đớn lớn lao. Để hiện lên trong tâm trí tôi,
+            Ai nên thực hành bất kỳ loại công việc nào ngoại trừ việc được hưởng lợi từ nó theo một cách nào đó?
+            kết quả Nghi ngờ hay đau đớn khi bị khiển trách trong niềm vui muốn được
+            đừng để tóc chạy trốn nỗi đau Ngoại trừ việc họ không bị dục vọng làm mờ mắt
+            họ xuất gia, họ có lỗi khi bỏ bê nhiệm vụ của mình;
+        </p>
+        <p>
+            Việc có một bệnh nhân là rất quan trọng và sau đó sẽ là một quá trình hấp thụ mỡ, nhưng tôi sẽ làm như vậy
+            theo thời gian chúng xảy ra như một cơn chuyển dạ và đau đớn lớn lao. Để hiện lên trong tâm trí tôi,
+            không ai nên thực hành bất kỳ loại công việc nào ngoại trừ việc đạt được một số lợi ích từ nó
+            kết quả Nghi ngờ hay đau đớn khi bị khiển trách trong niềm vui muốn được
+            đừng để tóc chạy trốn nỗi đau Ngoại trừ việc họ không bị dục vọng làm mờ mắt
+            họ xuất gia, họ có lỗi khi bỏ bê nhiệm vụ của mình;
+        </p>
+
+    </div><!-- container // -->
+</section>
+<!-- ========================= SECTION  END// ========================= -->
