@@ -1,0 +1,347 @@
+﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="card-title mb-0">
+                            <i class="fa fa-shopping-bag"></i> Đơn hàng của tôi
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        @if (Model != null && Model.Any())
+                        {
+                            <div class="row">
+                                @foreach (var order in Model.OrderByDescending(o => o.CreatedAt))
+                                {
+                                    var totalAmount = order.OrderDetails?.Sum(od => od.TotalPrice) ?? 0;
+                                    var orderName = order.Name;
+                                    var isCod = orderName.Contains("| COD |");
+                                    
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card h-100 border-0 shadow-sm">
+                                            <div class="card-header bg-light">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="mb-0 text-primary">
+                                                        <i class="fa fa-receipt"></i> @order.Name
+                                                    </h6>
+                                                    @{
+                                                        string statusText = "";
+                                                        string statusClass = "";
+                                                        switch (order.Status)
+                                                        {
+                                                            case 1:
+                                                                statusText = "Chờ xử lý";
+                                                                statusClass = "badge-warning";
+                                                                break;
+                                                            case 2:
+                                                                statusText = "Đang xử lý";
+                                                                statusClass = "badge-info";
+                                                                break;
+                                                            case 3:
+                                                                statusText = "Đang giao hàng";
+                                                                statusClass = "badge-primary";
+                                                                break;
+                                                            case 4:
+                                                                statusText = "Đã giao hàng";
+                                                                statusClass = "badge-success";
+                                                                break;
+                                                            case 5:
+                                                                statusText = "Đã hủy";
+                                                                statusClass = "badge-danger";
+                                                                break;
+                                                            default:
+                                                                statusText = "Giao thất bại";
+                                                                statusClass = "badge-secondary";
+                                                                break;
+                                                        }
+                                                    }
+                                                    <span class="badge @statusClass">@statusText</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-calendar"></i> 
+                                                        @if (order.CreatedAt.HasValue)
+                                                        {
+                                                            @order.CreatedAt.Value.ToString("dd/MM/yyyy HH:mm")
+                                                        }
+                                                    </small>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    @if (isCod)
+                                                    {
+                                                        var parts = orderName.Split('|');
+                                                        if (parts.Length >= 4)
+                                                        {
+                                                            <div class="alert alert-info p-2 mb-2">
+                                                                <small>
+                                                                    <i class="fa fa-money-bill-wave text-success"></i>
+                                                                    <strong>COD - Thanh toán khi nhận hàng</strong>
+                                                                </small>
+                                                            </div>
+                                                            <div class="small">
+                                                                <div><strong>Người nhận:</strong> @parts[2].Trim()</div>
+                                                                <div><strong>SĐT:</strong> @parts[3].Trim()</div>
+                                                                <div><strong>Địa chỉ:</strong> @parts[4].Trim()</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="alert alert-success p-2">
+                                                            <small>
+                                                                <i class="fa fa-credit-card"></i>
+                                                                <strong>Thanh toán online</strong>
+                                                            </small>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h5 class="text-primary mb-0">@totalAmount.ToString("N0") đ</h5>
+                                                        <small class="text-muted">Tổng tiền</small>
+                                                    </div>
+                                                    <button class="btn btn-outline-primary btn-sm view-order-details" 
+                                                            data-order-id="@order.Id" 
+                                                            data-toggle="modal" 
+                                                            data-target="#orderDetailsModal">
+                                                        <i class="fa fa-eye"></i> Chi tiết
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <div class="mb-4">
+                                    <i class="fa fa-shopping-bag fa-4x text-muted"></i>
+                                </div>
+                                <h4 class="text-muted mb-3">Bạn chưa có đơn hàng nào</h4>
+                                <p class="text-muted mb-4">Hãy mua sắm để tạo đơn hàng đầu tiên!</p>
+                                <a href="/Home/Grid/0" class="btn btn-primary btn-lg">
+                                    <i class="fa fa-shopping-cart"></i> Mua sắm ngay
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Chi tiết đơn hàng -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="orderDetailsModalLabel">
+                    <i class="fa fa-list"></i> Chi tiết đơn hàng
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="orderDetailsContent">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Đang tải...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Đang tải thông tin đơn hàng...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+<script>
+$(document).ready(function() {
+    // Cập nhật số lượng đơn hàng
+    updateOrderCount();
+    
+    // Xử lý xem chi tiết đơn hàng
+    $('.view-order-details').click(function() {
+        var orderId = $(this).data('order-id');
+        var modal = $('#orderDetailsModal');
+        var content = $('#orderDetailsContent');
+        
+        // Hiển thị loading
+        content.html(`
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Đang tải...</span>
+                </div>
+                <p class="mt-3 text-muted">Đang tải thông tin đơn hàng...</p>
+            </div>
+        `);
+        
+        // Gọi AJAX để lấy chi tiết đơn hàng
+        $.ajax({
+            url: '/Order/GetOrderDetails',
+            type: 'GET',
+            data: { id: orderId },
+            success: function(response) {
+                console.log('Response:', response); // Debug log
+                
+                if (response && response.length > 0) {
+                    // Tính tổng
+                    var totalAmount = response.reduce(function(sum, item) {
+                        return sum + item.TotalPrice;
+                    }, 0);
+                    
+                    var totalQuantity = response.reduce(function(sum, item) {
+                        return sum + item.Quantity;
+                    }, 0);
+                    
+                    // Tạo HTML trực tiếp thay vì dùng template
+                    var html = '<div class="order-details">';
+                    html += '<div class="row">';
+                    
+                    response.forEach(function(item) {
+                        html += '<div class="col-md-6 mb-3">';
+                        html += '<div class="card border-0 shadow-sm">';
+                        html += '<div class="card-body">';
+                        html += '<div class="d-flex align-items-center">';
+                        
+                        if (item.ProductImage) {
+                            html += '<img src="/Content/img/items/' + item.ProductImage + '" alt="' + item.ProductName + '" class="img-thumbnail mr-3" style="width: 60px; height: 60px; object-fit: cover;">';
+                        } else {
+                            html += '<div class="bg-light rounded mr-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">';
+                            html += '<i class="fa fa-image text-muted"></i>';
+                            html += '</div>';
+                        }
+                        
+                        html += '<div class="flex-grow-1">';
+                        html += '<h6 class="mb-1">' + item.ProductName + '</h6>';
+                        html += '<small class="text-muted">Mã: SP-' + item.ProductId.toString().padStart(4, '0') + '</small>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<hr class="my-3">';
+                        html += '<div class="row text-center">';
+                        html += '<div class="col-4"><div class="text-muted small">Số lượng</div><div class="font-weight-bold text-primary">' + item.Quantity + '</div></div>';
+                        html += '<div class="col-4"><div class="text-muted small">Đơn giá</div><div class="font-weight-bold text-success">' + item.Price.toLocaleString('vi-VN') + ' đ</div></div>';
+                        html += '<div class="col-4"><div class="text-muted small">Tổng tiền</div><div class="font-weight-bold text-danger">' + item.TotalPrice.toLocaleString('vi-VN') + ' đ</div></div>';
+                        html += '</div>';
+                        
+                        if (item.CreatedAt) {
+                            var date = new Date(item.CreatedAt);
+                            html += '<div class="text-center mt-2">';
+                            html += '<small class="text-muted"><i class="fa fa-clock"></i> ' + date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN') + '</small>';
+                            html += '</div>';
+                        }
+                        
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+                    
+                    html += '</div>';
+                    html += '<div class="row mt-4">';
+                    html += '<div class="col-md-12">';
+                    html += '<div class="card bg-gradient-primary text-white">';
+                    html += '<div class="card-body">';
+                    html += '<div class="row text-center">';
+                    html += '<div class="col-md-4"><h4 class="mb-0">' + response.length + '</h4><small>Sản phẩm</small></div>';
+                    html += '<div class="col-md-4"><h4 class="mb-0">' + totalQuantity + '</h4><small>Tổng số lượng</small></div>';
+                    html += '<div class="col-md-4"><h4 class="mb-0">' + totalAmount.toLocaleString('vi-VN') + ' đ</h4><small>Tổng tiền</small></div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    
+                    content.html(html);
+                } else {
+                    content.html(`
+                        <div class="text-center py-4">
+                            <i class="fa fa-exclamation-triangle fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Không có chi tiết đơn hàng</h5>
+                            <p class="text-muted">Không thể tải thông tin chi tiết đơn hàng.</p>
+                        </div>
+                    `);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', xhr.responseText); // Debug log
+                content.html(`
+                    <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        Không thể tải thông tin đơn hàng. Vui lòng thử lại!<br>
+                        <small>Lỗi: ${error}</small>
+                    </div>
+                `);
+            }
+        });
+    });
+    
+    // Cấu hình Toastr
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    
+    // Hàm cập nhật số lượng đơn hàng
+    function updateOrderCount() {
+        $.ajax({
+            url: '/Order/GetOrderCount',
+            type: 'GET',
+            success: function(data) {
+                $('#OrderCount').text(data.count);
+                // Cập nhật session count
+                if (data.count > 0) {
+                    $('#OrderCount').show();
+                } else {
+                    $('#OrderCount').hide();
+                }
+            },
+            error: function() {
+                console.log('Không thể cập nhật số lượng đơn hàng');
+            }
+        });
+    }
+    
+    // Cập nhật số lượng đơn hàng mỗi 30 giây
+    setInterval(updateOrderCount, 30000);
+});
+</script>
+
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+

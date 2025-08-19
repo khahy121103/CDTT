@@ -3,10 +3,10 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <script type="text/javascript">
-    // Tạo mã đơn hàng duy nhất dựa trên thời gian hiện tại
-    //let currentOrderDescription = "PNT" + new Date().getTime();
-    let currentOrderDescription = "PNT1737114263762";
+    // Tạo mã đơn hàng động với định dạng KHY + timestamp (14 chữ số)
+    let currentOrderDescription = "KHY" + new Date().getTime().toString().padStart(14, '0');
 
     $(function () {
         // Khởi tạo sự kiện khi trang được tải
@@ -28,6 +28,15 @@
 
         // Kiểm tra trạng thái đăng nhập và tạo mã QR
         $(document).on("click", "#generateQR", handleGenerateQR);
+        
+        // Xử lý thanh toán VNPay
+        $(document).on("click", "#vnpayPayment", handleVNPayPayment);
+        $(document).on("click", "#testVNPayPayment", handleTestVNPayPayment);
+    $(document).on("click", "#testVNPayConfig2", handleTestVNPayConfig2);
+
+        
+        // Xử lý thanh toán COD
+        $(document).on("click", "#codPayment", handleCodPayment);
     }
 
     /**
@@ -87,7 +96,7 @@
 
     /**
      * Cập nhật số lượng sản phẩm trong giỏ hàng
-     */
+*/
     function updateQuantity(productId, newQuantity) {
         const model = { Id: productId, Quantity: newQuantity };
         sendAjaxRequest('/Cart/UpdateQuantity', 'POST', model, function (data) {
@@ -149,13 +158,133 @@
     }
 
     /**
+     * Xử lý thanh toán VNPay
+     */
+    function handleVNPayPayment() {
+        sendAjaxRequest('/Home/CheckLoginStatus', 'GET', null, function (isLoggedIn) {
+            if (!isLoggedIn) {
+                alert("Bạn cần đăng nhập trước khi thanh toán!");
+                window.location.href = '/Home/Login';
+                return;
+            }
+
+            const totalPrice = parseFloat($("#finalPrice").text().replace(/,/g, ''));
+            if (isNaN(totalPrice) || totalPrice <= 0) {
+                toastr.warning("Chưa có sản phẩm nào trong giỏ hàng!");
+                return;
+            }
+
+            // Hiển thị loading
+            $("#vnpayPayment").html('<i class="fa fa-spinner fa-spin"></i> Đang xử lý...');
+            $("#vnpayPayment").prop('disabled', true);
+
+            // Gọi API tạo thanh toán VNPay
+            sendAjaxRequest('/Cart/CreateVNPayPayment', 'POST', null, function (response) {
+                if (response.success) {
+                    // Chuyển hướng đến trang thanh toán VNPay
+                    window.location.href = response.paymentUrl;
+                } else {
+                    alert("Có lỗi xảy ra: " + response.message);
+                    // Reset button
+                    $("#vnpayPayment").html('<i class="fa fa-credit-card"></i> Thanh toán VNPay');
+                    $("#vnpayPayment").prop('disabled', false);
+                }
+            }, function () {
+                alert("Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại!");
+                // Reset button
+                $("#vnpayPayment").html('<i class="fa fa-credit-card"></i> Thanh toán VNPay');
+                $("#vnpayPayment").prop('disabled', false);
+            });
+        }, function () {
+            console.error("Không thể kiểm tra trạng thái đăng nhập. Vui lòng thử lại!");
+        });
+    }
+
+    /**
+     * Xử lý test thanh toán VNPay
+     */
+    function handleTestVNPayPayment() {
+        // Hiển thị loading
+        $("#testVNPayPayment").html('<i class="fa fa-spinner fa-spin"></i> Đang test...');
+        $("#testVNPayPayment").prop('disabled', true);
+
+        // Gọi API test VNPay
+        sendAjaxRequest('/Cart/TestVNPayPayment', 'POST', null, function (response) {
+            if (response.success) {
+                // Chuyển hướng đến trang thanh toán VNPay
+                window.location.href = response.paymentUrl;
+            } else {
+                alert("Có lỗi xảy ra: " + response.message);
+                // Reset button
+                $("#testVNPayPayment").html('<i class="fa fa-flask"></i> Test VNPay (10K)');
+                $("#testVNPayPayment").prop('disabled', false);
+            }
+        }, function () {
+            alert("Có lỗi xảy ra khi test VNPay. Vui lòng thử lại!");
+            // Reset button
+            $("#testVNPayPayment").html('<i class="fa fa-flask"></i> Test VNPay (10K)');
+            $("#testVNPayPayment").prop('disabled', false);
+        });
+    }
+
+    /**
+     * Xử lý test thanh toán VNPay với config khác
+     */
+    function handleTestVNPayConfig2() {
+        // Hiển thị loading
+        $("#testVNPayConfig2").html('<i class="fa fa-spinner fa-spin"></i> Đang test...');
+        $("#testVNPayConfig2").prop('disabled', true);
+
+        // Gọi API test VNPay Config 2
+        sendAjaxRequest('/Cart/TestVNPayConfig2', 'POST', null, function (response) {
+            if (response.success) {
+                // Chuyển hướng đến trang thanh toán VNPay
+                window.location.href = response.paymentUrl;
+            } else {
+                alert("Có lỗi xảy ra: " + response.message);
+                // Reset button
+                $("#testVNPayConfig2").html('<i class="fa fa-cog"></i> Test Config 2');
+                $("#testVNPayConfig2").prop('disabled', false);
+            }
+        }, function () {
+            alert("Có lỗi xảy ra khi test VNPay Config 2. Vui lòng thử lại!");
+            // Reset button
+            $("#testVNPayConfig2").html('<i class="fa fa-cog"></i> Test Config 2');
+            $("#testVNPayConfig2").prop('disabled', false);
+        });
+    }
+
+    /**
+     * Xử lý thanh toán COD
+     */
+    function handleCodPayment() {
+        sendAjaxRequest('/Home/CheckLoginStatus', 'GET', null, function (isLoggedIn) {
+            if (!isLoggedIn) {
+                alert("Bạn cần đăng nhập trước khi tạo đơn hàng!");
+                window.location.href = '/Home/Login';
+                return;
+            }
+
+            const totalPrice = parseFloat($("#finalPrice").text().replace(/,/g, ''));
+            if (isNaN(totalPrice) || totalPrice <= 0) {
+                toastr.warning("Chưa có sản phẩm nào trong giỏ hàng!");
+                return;
+            }
+
+            $("#codModal").modal("show");
+        }, function () {
+            console.error("Không thể kiểm tra trạng thái đăng nhập. Vui lòng thử lại!");
+        });
+    }
+
+    /**
      * Tạo và hiển thị mã QR thanh toán
      */
     function generateQR(totalPrice) {
-        const accountNo = "0702775390";
-        const accountName = "PHANNGOCTHUONG";
+        const accountNo = "1019789610";
+        const accountName = "VOPHANKHAHY";
 
-        const qrUrl = `https://img.vietqr.io/image/MB-${accountNo}-compact2.png?amount=${totalPrice.toFixed(2)}&accountName=${encodeURIComponent(accountName)}&addInfo=${encodeURIComponent(currentOrderDescription)}`;
+        const qrUrl = `https://img.vietqr.io/image/VCB-${accountNo}-compact2.png?amount=${totalPrice.toFixed(2)}&accountName=${encodeURIComponent(accountName)}&addInfo=${encodeURIComponent(currentOrderDescription)}`;
         $("#qrImage").attr("src", qrUrl);
         $("#qrModal").modal("show");
 
@@ -171,7 +300,7 @@
         `);
             setTimeout(function () {
                 $("#qrModal").modal("hide");
-                window.location.href = '/Cart';
+                window.location.href = '/Cart/Index';
             }, 5000);
         }, 5 * 60 * 1000);
     }
@@ -196,7 +325,7 @@
      * Kiểm tra trạng thái thanh toán bằng mô tả đơn hàng
      */
     function checkPayment(orderDescription) {
-        const checkUrl = "https://script.googleusercontent.com/macros/echo?user_content_key=yA79TOofcJsZC2SKsO_1AQJKjFLWKJ4ZluW5ty2AZJMAsgATYRJG1BkmHM2JYRU_Dz2po1u5jzwEjBNhNrgwZlFrO3_jfygqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnNmCrnDXmHNaaVRo6CZ-aukyyvBNz-V-4NSlEt-icjr8SJRuuDZ-rpv_SHrXctfxCVhjwH1z6CHsOYFZAcojSkgECdl60pAblNz9Jw9Md8uu&lib=Mi60UgAAWkNk2jxMHCxDhw4kSKk6uq8lw";
+        const checkUrl = "https://script.google.com/macros/s/AKfycbz3Y5Hd0Uq4-47aDFzhp31rFucyPCnjG5jYhQPIY4GY_0yGUu49shkBkaIcYGVe4wDQjA/exec";
         let interval;
 
         $("#qrModal").on("shown.bs.modal", function () {
@@ -204,7 +333,7 @@
                 $.getJSON(checkUrl, function (response) {
                     const rows = response.data || [];
                     rows.forEach((row) => {
-                        const extractedCode = row.description?.match(/PNT\d+/)?.[0] || "";
+                        const extractedCode = row.description?.match(/KHY\d+/)?.[0] || "";
                         if (extractedCode === orderDescription) {
                             clearInterval(interval);
                             showSuccessModal();
@@ -218,7 +347,7 @@
 
         $("#qrModal").on("hidden.bs.modal", function () {
             clearInterval(interval);
-            window.location.href = '/Cart';
+            window.location.href = '/Cart/Index';
         });
     }
 
@@ -231,7 +360,7 @@
                 $("#qrModal .modal-body").html(`
                 <div class="text-center">
                     <i class="fa fa-check-circle text-success" style="font-size: 50px;"></i>
-                    <p class="mt-3 h5">Thanh toán thành công!</p>
+<p class="mt-3 h5">Thanh toán thành công!</p>
                 </div>
             `);
 
@@ -263,6 +392,419 @@
         });
     }
 
+    /**
+     * Xử lý xác nhận đặt hàng COD
+     */
+    $(document).on("click", "#confirmCodOrder", function() {
+        if (!validateCodForm()) {
+            return;
+        }
+
+        var orderData = {
+            currentOrderDescription: currentOrderDescription,
+            receiverName: $("#receiverName").val(),
+            receiverPhone: $("#receiverPhone").val(),
+            receiverEmail: $("#receiverEmail").val(),
+            shippingAddress: $("#shippingAddress").val(),
+            shippingCity: $("#shippingCity").val(),
+            shippingDistrict: $("#shippingDistrict").val(),
+            orderNote: $("#orderNote").val()
+        };
+
+        sendAjaxRequest('/Cart/CreatOrder', 'POST', orderData, function(response) {
+            if (response.OrderId) {
+                $("#codModal .modal-body").html(`
+                    <div class="text-center">
+                        <i class="fa fa-check-circle text-success" style="font-size: 48px;"></i>
+                        <h4 class="text-success mt-3">Đặt hàng thành công!</h4>
+                        <p class="text-muted">Mã đơn hàng: <strong>${response.OrderId}</strong></p>
+                        <p>Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
+                        <div class="mt-4">
+                            <a href="/Home/Grid/0" class="btn btn-primary">
+                                <i class="fa fa-shopping-bag"></i> Tiếp tục mua sắm
+                            </a>
+                        </div>
+                    </div>
+                `);
+                $("#codModal .modal-footer").hide();
+                
+                sendAjaxRequest('/Cart/ClearCart', 'POST', null, function () {
+                    setTimeout(function() {
+                        $("#codModal").modal("hide");
+                        window.location.href = "/Home/Grid/0";
+                    }, 3000);
+                });
+            } else {
+                alert("Có lỗi xảy ra: " + response.Message);
+            }
+        }, function() {
+            alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại!");
+        });
+    });
+
+    /**
+     * Validation form COD
+     */
+    function validateCodForm() {
+        var isValid = true;
+        
+        // Reset validation
+        $(".form-control").removeClass("is-invalid");
+        
+        // Validate required fields
+        if (!$("#receiverName").val().trim()) {
+            $("#receiverName").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        if (!$("#receiverPhone").val().trim()) {
+            $("#receiverPhone").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        if (!$("#shippingAddress").val().trim()) {
+            $("#shippingAddress").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        if (!$("#shippingCity").val()) {
+            $("#shippingCity").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        if (!$("#shippingDistrict").val()) {
+            $("#shippingDistrict").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        // Validate phone number
+        var phone = $("#receiverPhone").val().trim();
+        if (phone && !/^[0-9]{10,11}$/.test(phone.replace(/\s/g, ''))) {
+            $("#receiverPhone").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        // Validate email (optional)
+        var email = $("#receiverEmail").val().trim();
+        if (email && email.indexOf('@@') === -1) {
+            $("#receiverEmail").addClass("is-invalid");
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            alert("Vui lòng kiểm tra lại thông tin!");
+        }
+        
+        return isValid;
+    }
+
+    // Dữ liệu quận/huyện cho từng tỉnh/thành phố
+    const districtData = {
+        "Hà Nội": [
+            "Ba Đình", "Hoàn Kiếm", "Tây Hồ", "Long Biên", "Cầu Giấy", "Đống Đa", 
+            "Hai Bà Trưng", "Hoàng Mai", "Thanh Xuân", "Sóc Sơn", "Đông Anh", 
+            "Gia Lâm", "Nam Từ Liêm", "Thanh Trì", "Bắc Từ Liêm", "Mê Linh", 
+            "Phú Xuyên", "Phúc Thọ", "Đan Phượng", "Ba Vì", "Thạch Thất", 
+            "Chương Mỹ", "Thanh Oai", "Thường Tín", "Phú Nhuận", "Ứng Hòa", 
+            "Mỹ Đức", "Quốc Oai", "Hoài Đức", "Thạch Thất", "Chương Mỹ"
+        ],
+        "TP. Hồ Chí Minh": [
+            "Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6", 
+            "Quận 7", "Quận 8", "Quận 9", "Quận 10", "Quận 11", "Quận 12", 
+            "Tân Bình", "Bình Tân", "Tân Phú", "Phú Nhuận", "Gò Vấp", 
+            "Bình Thạnh", "Thủ Đức", "Củ Chi", "Hóc Môn", "Bình Chánh", 
+            "Nhà Bè", "Cần Giờ"
+        ],
+        "Đà Nẵng": [
+            "Hải Châu", "Thanh Khê", "Sơn Trà", "Ngũ Hành Sơn", "Liên Chiểu", 
+            "Cẩm Lệ", "Hòa Vang", "Hoàng Sa"
+        ],
+        "Hải Phòng": [
+            "Hồng Bàng", "Ngô Quyền", "Lê Chân", "Hải An", "Kiến An", 
+            "Đồ Sơn", "Dương Kinh", "Thủy Nguyên", "An Dương", "An Lão", 
+            "Kiến Thụy", "Tiên Lãng", "Vĩnh Bảo", "Cát Hải", "Bạch Long Vĩ"
+        ],
+        "Cần Thơ": [
+            "Ninh Kiều", "Bình Thủy", "Cái Răng", "Ô Môn", "Thốt Nốt", 
+            "Vĩnh Thạnh", "Cờ Đỏ", "Phong Điền", "Thới Lai"
+        ],
+        "An Giang": [
+            "Long Xuyên", "Châu Đốc", "Tân Châu", "Thoại Sơn", "Tịnh Biên", 
+            "Tri Tôn", "Châu Phú", "Chợ Mới", "An Phú", "Phú Tân"
+        ],
+        "Bà Rịa - Vũng Tàu": [
+            "Vũng Tàu", "Bà Rịa", "Châu Đức", "Xuyên Mộc", "Long Điền", 
+            "Đất Đỏ", "Tân Thành", "Côn Đảo"
+        ],
+        "Bắc Giang": [
+            "Bắc Giang", "Yên Thế", "Tân Yên", "Lạng Giang", "Lục Nam", 
+            "Lục Ngạn", "Sơn Động", "Yên Dũng", "Việt Yên", "Hiệp Hòa"
+        ],
+        "Bắc Kạn": [
+            "Bắc Kạn", "Pác Nặm", "Ba Bể", "Ngân Sơn", "Bạch Thông", 
+            "Chợ Đồn", "Chợ Mới", "Na Rì"
+        ],
+        "Bạc Liêu": [
+            "Bạc Liêu", "Hồng Dân", "Phước Long", "Vĩnh Lợi", "Giá Rai", 
+            "Đông Hải", "Hoà Bình"
+        ],
+        "Bắc Ninh": [
+            "Bắc Ninh", "Yên Phong", "Quế Võ", "Thuận Thành", 
+            "Gia Bình", "Lương Tài"
+        ],
+        "Bến Tre": [
+            "Bến Tre", "Châu Thành", "Chợ Lách", "Mỏ Cày Nam", "Giồng Trôm", 
+            "Bình Đại", "Ba Tri", "Thạnh Phú", "Mỏ Cày Bắc"
+        ],
+        "Bình Định": [
+            "Quy Nhơn", "An Lão", "Hoài Ân", "Hoài Nhơn", "Phù Mỹ", 
+            "Vĩnh Thạnh", "Tây Sơn", "Vân Canh", "Tuy Phước", "Phù Cát", 
+            "An Nhơn"
+        ],
+        "Bình Dương": [
+            "Thủ Dầu Một", "Bàu Bàng", "Dầu Tiếng", "Bến Cát", "Phú Giáo", 
+            "Tân Uyên", "Dĩ An", "Thuận An", "Bắc Tân Uyên"
+        ],
+        "Bình Phước": [
+            "Đồng Xoài", "Bình Long", "Bù Gia Mập", "Lộc Ninh", "Bù Đốp", 
+            "Hớn Quản", "Đồng Phú", "Bù Đăng", "Chơn Thành", "Phú Riềng"
+        ],
+        "Bình Thuận": [
+            "Phan Thiết", "La Gi", "Tuy Phong", "Bắc Bình", "Hàm Thuận Bắc", 
+            "Hàm Thuận Nam", "Tánh Linh", "Đức Linh", "Hàm Tân", "Phú Quý"
+        ],
+        "Cà Mau": [
+            "Cà Mau", "U Minh", "Thới Bình", "Trần Văn Thời", "Cái Nước", 
+            "Đầm Dơi", "Năm Căn", "Phú Tân", "Ngọc Hiển"
+        ],
+        "Cao Bằng": [
+            "Cao Bằng", "Bảo Lạc", "Thông Nông", "Hà Quảng", "Trà Lĩnh", 
+            "Trùng Khánh", "Hạ Lang", "Quảng Hòa", "Hoà An", "Nguyên Bình", 
+            "Thạch An"
+        ],
+        "Đắk Lắk": [
+            "Buôn Ma Thuột", "Ea H'leo", "Ea Súp", "Buôn Đôn", "Cư M'gar", 
+            "Krông Búk", "Krông Năng", "Ea Kar", "M'Đrắk", "Krông Bông", 
+            "Krông Pắk", "Krông A Na", "Lắk", "Cư Kuin"
+        ],
+        "Đắk Nông": [
+            "Gia Nghĩa", "Đắk Glong", "Cư Jút", "Đắk Mil", "Krông Nô", 
+            "Đắk Song", "Đắk R'Lấp", "Tuy Đức"
+        ],
+        "Điện Biên": [
+            "Điện Biên Phủ", "Mường Lay", "Mường Nhé", "Mường Chà", "Tủa Chùa", 
+            "Tuần Giáo", "Điện Biên", "Điện Biên Đông", "Mường Ảng", "Nậm Pồ"
+        ],
+        "Đồng Nai": [
+            "Biên Hòa", "Long Khánh", "Tân Phú", "Vĩnh Cửu", "Định Quán", 
+            "Trảng Bom", "Thống Nhất", "Cẩm Mỹ", "Long Thành", "Xuân Lộc", 
+            "Nhơn Trạch"
+        ],
+        "Đồng Tháp": [
+            "Cao Lãnh", "Sa Đéc", "Hồng Ngự", "Tân Hồng", "Hồng Ngự", 
+            "Tam Nông", "Tháp Mười", "Cao Lãnh", "Lấp Vò", "Lai Vung", 
+            "Châu Thành"
+        ],
+        "Gia Lai": [
+            "Pleiku", "An Khê", "Ayun Pa", "KBang", "Đăk Đoa", "Chư Păh", 
+            "Ia Grai", "Mang Yang", "Kông Chro", "Đức Cơ", "Chư Prông", 
+            "Chư Sê", "Đăk Pơ", "Ia Pa", "Krông Pa", "Phú Thiện", "Chư Pưh"
+        ],
+        "Hà Giang": [
+            "Hà Giang", "Đồng Văn", "Mèo Vạc", "Yên Minh", "Quản Bạ", 
+            "Vị Xuyên", "Bắc Mê", "Hoàng Su Phì", "Xín Mần", "Bắc Quang", 
+            "Quang Bình"
+        ],
+        "Hà Nam": [
+            "Phủ Lý", "Duy Tiên", "Kim Bảng", "Thanh Liêm", "Bình Lục", 
+            "Lý Nhân"
+        ],
+        "Hà Tĩnh": [
+            "Hà Tĩnh", "Hồng Lĩnh", "Hương Sơn", "Đức Thọ", "Vũ Quang", 
+            "Nghi Xuân", "Can Lộc", "Hương Khê", "Thạch Hà", "Cẩm Xuyên", 
+            "Kỳ Anh", "Lộc Hà", "Kỳ Anh"
+        ],
+        "Hải Dương": [
+            "Hải Dương", "Chí Linh", "Nam Sách", "Kinh Môn", "Kim Thành", 
+            "Thanh Hà", "Cẩm Giàng", "Bình Giang", "Gia Lộc", "Tứ Kỳ", 
+            "Ninh Giang", "Thanh Miện"
+        ],
+        "Hậu Giang": [
+            "Vị Thanh", "Ngã Bảy", "Châu Thành A", "Châu Thành", "Phụng Hiệp", 
+            "Vị Thủy", "Long Mỹ", "Long Mỹ"
+        ],
+        "Hòa Bình": [
+            "Hòa Bình", "Đà Bắc", "Lương Sơn", "Kim Bôi", "Cao Phong", 
+            "Tân Lạc", "Mai Châu", "Lạc Sơn", "Yên Thủy", "Lạc Thủy"
+        ],
+        "Hưng Yên": [
+            "Hưng Yên", "Văn Lâm", "Văn Giang", "Yên Mỹ", "Mỹ Hào", 
+            "Ân Thi", "Khoái Châu", "Kim Động", "Tiên Lữ", "Phù Cừ"
+        ],
+        "Khánh Hòa": [
+            "Nha Trang", "Cam Ranh", "Cam Lâm", "Vạn Ninh", "Ninh Hòa", 
+            "Khánh Vĩnh", "Diên Khánh", "Khánh Sơn", "Trường Sa"
+        ],
+        "Kiên Giang": [
+            "Rạch Giá", "Hà Tiên", "Kiên Lương", "Hòn Đất", "Tân Hiệp", 
+            "Châu Thành", "Giồng Riềng", "Gò Quao", "An Biên", "An Minh", 
+            "Vĩnh Thuận", "Phú Quốc", "Kiên Hải", "U Minh Thượng", "Giang Thành"
+        ],
+        "Kon Tum": [
+            "Kon Tum", "Đắk Glei", "Ngọc Hồi", "Đắk Tô", "Kon Plông", 
+            "Kon Rẫy", "Đắk Hà", "Sa Thầy", "Tu Mơ Rông", "Ia H' Drai"
+        ],
+        "Lai Châu": [
+            "Lai Châu", "Tam Đường", "Mường Tè", "Sìn Hồ", "Phong Thổ", 
+            "Than Uyên", "Tân Uyên", "Nậm Nhùn"
+        ],
+        "Lâm Đồng": [
+            "Đà Lạt", "Bảo Lộc", "Đam Rông", "Lạc Dương", "Lâm Hà", 
+            "Đơn Dương", "Đức Trọng", "Di Linh", "Bảo Lâm", "Cát Tiên"
+        ],
+        "Lạng Sơn": [
+            "Lạng Sơn", "Tràng Định", "Bình Gia", "Văn Lãng", "Cao Lộc", 
+            "Văn Quan", "Bắc Sơn", "Hữu Lũng", "Chi Lăng", "Lộc Bình", 
+            "Đình Lập"
+        ],
+        "Lào Cai": [
+            "Lào Cai", "Bát Xát", "Mường Khương", "Si Ma Cai", "Bắc Hà", 
+            "Bảo Thắng", "Bảo Yên", "Sa Pa", "Văn Bàn"
+        ],
+        "Long An": [
+            "Tân An", "Kiến Tường", "Tân Hưng", "Vĩnh Hưng", "Mộc Hóa", 
+            "Tân Thạnh", "Thạnh Hóa", "Đức Huệ", "Đức Hòa", "Bến Lức", 
+            "Thủ Thừa", "Tân Trụ", "Cần Đước", "Cần Giuộc", "Châu Thành"
+        ],
+        "Nam Định": [
+            "Nam Định", "Mỹ Lộc", "Vụ Bản", "Ý Yên", "Nghĩa Hưng", 
+            "Nam Trực", "Trực Ninh", "Xuân Trường", "Giao Thủy", "Hải Hậu"
+        ],
+        "Nghệ An": [
+            "Vinh", "Cửa Lò", "Thái Hoà", "Quế Phong", "Quỳ Châu", 
+            "Kỳ Sơn", "Tương Dương", "Nghĩa Đàn", "Quỳ Hợp", "Quỳnh Lưu", 
+            "Con Cuông", "Tân Kỳ", "Anh Sơn", "Diễn Châu", "Yên Thành", 
+            "Đô Lương", "Thanh Chương", "Nghi Lộc", "Nam Đàn", "Hưng Nguyên", 
+            "Quỳnh Lưu", "Hoằng Hóa"
+        ],
+        "Ninh Bình": [
+            "Ninh Bình", "Tam Điệp", "Nho Quan", "Gia Viễn", "Hoa Lư", 
+            "Yên Khánh", "Kim Sơn", "Yên Mô"
+        ],
+        "Ninh Thuận": [
+            "Phan Rang-Tháp Chàm", "Bác Ái", "Ninh Sơn", "Ninh Hải", 
+            "Ninh Phước", "Thuận Bắc", "Thuận Nam"
+        ],
+        "Phú Thọ": [
+            "Việt Trì", "Phú Thọ", "Đoan Hùng", "Hạ Hoà", "Thanh Ba", 
+            "Phù Ninh", "Yên Lập", "Cẩm Khê", "Tam Nông", "Lâm Thao", 
+            "Thanh Sơn", "Thanh Thuỷ", "Tân Sơn"
+        ],
+        "Phú Yên": [
+            "Tuy Hoà", "Sông Cầu", "Đồng Xuân", "Tuy An", "Sơn Hòa", 
+            "Sông Hinh", "Tây Hoà", "Phú Hoà", "Đông Hòa"
+        ],
+        "Quảng Bình": [
+            "Đồng Hới", "Minh Hóa", "Tuyên Hóa", "Quảng Trạch", "Bố Trạch", 
+            "Quảng Ninh", "Lệ Thủy"
+        ],
+        "Quảng Nam": [
+            "Tam Kỳ", "Hội An", "Tây Giang", "Đông Giang", "Đại Lộc", 
+            "Điện Bàn", "Duy Xuyên", "Quế Sơn", "Nam Giang", "Phước Sơn", 
+            "Hiệp Đức", "Thăng Bình", "Tiên Phước", "Bắc Trà My", "Nam Trà My", 
+            "Núi Thành", "Phú Ninh", "Nông Sơn"
+        ],
+        "Quảng Ngãi": [
+            "Quảng Ngãi", "Bình Sơn", "Trà Bồng", "Sơn Tịnh", "Tư Nghĩa", 
+            "Sơn Hà", "Sơn Tây", "Minh Long", "Nghĩa Hành", "Mộ Đức", 
+            "Đức Phổ", "Ba Tơ", "Lý Sơn"
+        ],
+        "Quảng Ninh": [
+            "Hạ Long", "Móng Cái", "Cẩm Phả", "Uông Bí", "Bình Liêu", 
+            "Tiên Yên", "Đầm Hà", "Hải Hà", "Ba Chẽ", "Vân Đồn", 
+            "Hoành Bồ", "Đông Triều", "Yên Hưng", "Cô Tô"
+        ],
+        "Quảng Trị": [
+            "Đông Hà", "Quảng Trị", "Vĩnh Linh", "Hướng Hóa", "Gio Linh", 
+            "Đa Krông", "Cam Lộ", "Triệu Phong", "Hải Lăng", "Cồn Cỏ"
+        ],
+        "Sóc Trăng": [
+            "Sóc Trăng", "Châu Thành", "Kế Sách", "Mỹ Tú", "Cù Lao Dung", 
+            "Long Phú", "Mỹ Xuyên", "Ngã Năm", "Thạnh Trị", "Vĩnh Châu", 
+            "Trần Đề"
+        ],
+        "Sơn La": [
+            "Sơn La", "Quỳnh Nhai", "Thuận Châu", "Mường La", "Bắc Yên", 
+            "Phù Yên", "Mộc Châu", "Yên Châu", "Mai Sơn", "Sông Mã", 
+            "Sốp Cộp", "Vân Hồ"
+        ],
+        "Tây Ninh": [
+            "Tây Ninh", "Tân Biên", "Tân Châu", "Dương Minh Châu", 
+            "Châu Thành", "Hòa Thành", "Bến Cầu", "Gò Dầu", "Trảng Bàng"
+        ],
+        "Thái Bình": [
+            "Thái Bình", "Quỳnh Phụ", "Hưng Hà", "Đông Hưng", "Thái Thụy", 
+            "Tiền Hải", "Kiến Xương", "Vũ Thư"
+        ],
+        "Thái Nguyên": [
+            "Thái Nguyên", "Sông Công", "Định Hóa", "Phú Lương", "Đồng Hỷ", 
+            "Võ Nhai", "Đại Từ", "Phổ Yên", "Phú Bình"
+        ],
+        "Thanh Hóa": [
+            "Thanh Hóa", "Bỉm Sơn", "Sầm Sơn", "Mường Lát", "Quan Hóa", 
+            "Bá Thước", "Quan Sơn", "Lang Chánh", "Ngọc Lặc", "Cẩm Thủy", 
+            "Thạch Thành", "Hà Trung", "Vĩnh Lộc", "Yên Định", "Thọ Xuân", 
+            "Thường Xuân", "Triệu Sơn", "Thiệu Hóa", "Hoằng Hóa", "Hậu Lộc", 
+            "Nga Sơn", "Như Xuân", "Như Thanh", "Nông Cống", "Đông Sơn", 
+            "Quảng Xương", "Tĩnh Gia"
+        ],
+        "Thừa Thiên Huế": [
+            "Huế", "Phong Điền", "Quảng Điền", "Phú Vang", "Hương Thủy", 
+            "Phú Lộc", "A Lưới", "Nam Đông"
+        ],
+        "Tiền Giang": [
+            "Mỹ Tho", "Gò Công", "Cai Lậy", "Tân Phước", "Cái Bè", 
+            "Cai Lậy", "Châu Thành", "Chợ Gạo", "Gò Công Tây", "Gò Công Đông", 
+            "Tân Phú Đông"
+        ],
+        "Trà Vinh": [
+            "Trà Vinh", "Càng Long", "Cầu Kè", "Tiểu Cần", "Châu Thành", 
+            "Cầu Ngang", "Trà Cú", "Duyên Hải", "Duyên Hải"
+        ],
+        "Tuyên Quang": [
+            "Tuyên Quang", "Lâm Bình", "Na Hang", "Chiêm Hóa", "Hàm Yên", 
+            "Yên Sơn", "Sơn Dương"
+        ],
+        "Vĩnh Long": [
+            "Vĩnh Long", "Long Hồ", "Mang Thít", "Vũng Liêm", "Tam Bình", 
+            "Bình Minh", "Trà Ôn", "Bình Tân"
+        ],
+        "Vĩnh Phúc": [
+            "Vĩnh Yên", "Phúc Yên", "Lập Thạch", "Tam Dương", "Tam Đảo", 
+            "Bình Xuyên", "Yên Lạc", "Vĩnh Tường", "Sông Lô"
+        ],
+        "Yên Bái": [
+            "Yên Bái", "Nghĩa Lộ", "Lục Yên", "Văn Yên", "Mù Cang Chải", 
+            "Trấn Yên", "Trạm Tấu", "Văn Chấn", "Yên Bình"
+        ]
+    };
+
+    // Xử lý sự kiện khi chọn tỉnh/thành phố
+    $(document).on("change", "#shippingCity", function() {
+        const selectedCity = $(this).val();
+        const districtSelect = $("#shippingDistrict");
+        
+        // Xóa tất cả options cũ
+        districtSelect.empty();
+        districtSelect.append('<option value="">Chọn quận/huyện</option>');
+        
+        if (selectedCity && districtData[selectedCity]) {
+            // Thêm các quận/huyện tương ứng
+            districtData[selectedCity].forEach(district => {
+                districtSelect.append(`<option value="${district}">${district}</option>`);
+            });
+        }
+    });
 </script>
 
 <!-- ========================= SECTION CONTENT ========================= -->
@@ -290,7 +832,7 @@
                                     <tr id="product-@item.Product.Id">
                                         <td>
                                             <figure class="itemside">
-                                                <div class="aside"><img src="~/content/images/items/@item.Product.Image" class="img-sm"></div>
+                                                <div class="aside"><img src="~/content/img/items/@item.Product.Image" class="img-sm"></div>
                                                 <figcaption class="info">
                                                     <a href="#" class="title text-dark">@item.Product.Name</a>
                                                     <p class="text-muted small">@item.Product.ShortDes</p>
@@ -300,11 +842,11 @@
                                         <td>
                                             <div class="input-group mb-3 input-spinner">
                                                 <div class="input-group-prepend">
-                                                    <button class="btn btn-light quantity-plus" data-product-id="@item.Product.Id">+</button>
+                                                    <button class="btn btn-light quantity-minus" data-product-id="@item.Product.Id">−</button>
                                                 </div>
                                                 <input type="text" id="quantity-@item.Product.Id" class="form-control quantity-input" value="@item.Quantity" data-product-id="@item.Product.Id">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-light quantity-minus" data-product-id="@item.Product.Id">−</button>
+                                                    <button class="btn btn-light quantity-plus" data-product-id="@item.Product.Id">+</button>
                                                 </div>
                                             </div>
 
@@ -336,8 +878,18 @@
                     </table>
 
                     <div class="card-body border-top">
-                        <a id="generateQR" class="btn btn-primary float-md-right"> Đặt hàng <i class="fa fa-chevron-right"></i> </a>
-                        <a href="Home" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Mua thêm sản phẩm </a>
+                        <div class="float-md-right">
+                                                    <a id="vnpayPayment" class="btn btn-warning mr-2"> 
+                            <i class="fa fa-credit-card"></i> Thanh toán VNPay 
+                        </a>
+                        <a id="generateQR" class="btn btn-primary mr-2"> 
+                            <i class="fa fa-qrcode"></i> Thanh toán QR 
+                        </a>
+                            <a id="codPayment" class="btn btn-success"> 
+                                <i class="fa fa-money-bill-wave"></i> Thanh toán khi nhận hàng 
+                            </a>
+                        </div>
+                        <a href="/Home/Grid/0" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Mua thêm sản phẩm </a>
                     </div>
                 </div> <!-- card.// -->
 
@@ -358,9 +910,173 @@
                                 <p class="mt-3">Quét mã QR để thanh toán</p>
                                 <p class="mt-3">Mã QR sẽ tự động đóng khi bạn hoàn tất thanh toán</p>
                                 <p class="mt-3 text-danger">Thời gian còn lại: <span id="countdown">05:00</span></p>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fa fa-info-circle mr-3 mt-1" style="font-size: 16px;"></i>
+                                        <div class="text-left">
+                                            <strong>Lưu ý về thanh toán online:</strong>
+                                            <ul class="mb-0 mt-2 small">
+                                                <li>Đơn hàng sẽ được xử lý ngay sau khi thanh toán thành công</li>
+                                                <li>Bạn sẽ nhận được email xác nhận đơn hàng</li>
+                                                <li>Thời gian giao hàng: <strong>2-4 ngày</strong> sau khi xác nhận</li>
+                                                <li>Phí vận chuyển: <strong>Miễn phí</strong> cho đơn hàng thanh toán online</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal COD -->
+                <div class="modal fade" id="codModal" tabindex="-1" role="dialog" aria-labelledby="codModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success text-white">
+                                <h5 class="modal-title" id="codModalLabel">
+                                    <i class="fa fa-money-bill-wave"></i> Thanh toán khi nhận hàng (COD)
+                                </h5>
+                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle"></i>
+                                    <strong>Thông tin:</strong> Bạn sẽ thanh toán khi nhận hàng. Vui lòng điền thông tin giao hàng bên dưới.
+                                </div>
+                                
+                                <form id="codForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="receiverName">Họ tên người nhận <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="receiverName" name="receiverName" required>
+                                                <div class="invalid-feedback">Vui lòng nhập họ tên người nhận</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="receiverPhone">Số điện thoại <span class="text-danger">*</span></label>
+                                                <input type="tel" class="form-control" id="receiverPhone" name="receiverPhone" required>
+                                                <div class="invalid-feedback">Vui lòng nhập số điện thoại hợp lệ</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="receiverEmail">Email</label>
+                                        <input type="email" class="form-control" id="receiverEmail" name="receiverEmail">
+                                        <div class="invalid-feedback">Vui lòng nhập email hợp lệ</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="shippingAddress">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="shippingAddress" name="shippingAddress" rows="2" required></textarea>
+                                        <div class="invalid-feedback">Vui lòng nhập địa chỉ giao hàng</div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="shippingCity">Tỉnh/Thành phố <span class="text-danger">*</span></label>
+                                                <select class="form-control" id="shippingCity" name="shippingCity" required>
+                                                    <option value="">Chọn tỉnh/thành phố</option>
+                                                    <option value="Hà Nội">Hà Nội</option>
+                                                    <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                                                    <option value="Đà Nẵng">Đà Nẵng</option>
+                                                    <option value="Hải Phòng">Hải Phòng</option>
+                                                    <option value="Cần Thơ">Cần Thơ</option>
+                                                    <option value="An Giang">An Giang</option>
+                                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+                                                    <option value="Bắc Giang">Bắc Giang</option>
+                                                    <option value="Bắc Kạn">Bắc Kạn</option>
+                                                    <option value="Bạc Liêu">Bạc Liêu</option>
+                                                    <option value="Bắc Ninh">Bắc Ninh</option>
+                                                    <option value="Bến Tre">Bến Tre</option>
+                                                    <option value="Bình Định">Bình Định</option>
+                                                    <option value="Bình Dương">Bình Dương</option>
+                                                    <option value="Bình Phước">Bình Phước</option>
+                                                    <option value="Bình Thuận">Bình Thuận</option>
+                                                    <option value="Cà Mau">Cà Mau</option>
+                                                    <option value="Cao Bằng">Cao Bằng</option>
+                                                    <option value="Đắk Lắk">Đắk Lắk</option>
+                                                    <option value="Đắk Nông">Đắk Nông</option>
+                                                    <option value="Điện Biên">Điện Biên</option>
+                                                    <option value="Đồng Nai">Đồng Nai</option>
+                                                    <option value="Đồng Tháp">Đồng Tháp</option>
+                                                    <option value="Gia Lai">Gia Lai</option>
+                                                    <option value="Hà Giang">Hà Giang</option>
+                                                    <option value="Hà Nam">Hà Nam</option>
+                                                    <option value="Hà Tĩnh">Hà Tĩnh</option>
+                                                    <option value="Hải Dương">Hải Dương</option>
+                                                    <option value="Hậu Giang">Hậu Giang</option>
+                                                    <option value="Hòa Bình">Hòa Bình</option>
+                                                    <option value="Hưng Yên">Hưng Yên</option>
+                                                    <option value="Khánh Hòa">Khánh Hòa</option>
+                                                    <option value="Kiên Giang">Kiên Giang</option>
+                                                    <option value="Kon Tum">Kon Tum</option>
+                                                    <option value="Lai Châu">Lai Châu</option>
+                                                    <option value="Lâm Đồng">Lâm Đồng</option>
+                                                    <option value="Lạng Sơn">Lạng Sơn</option>
+                                                    <option value="Lào Cai">Lào Cai</option>
+                                                    <option value="Long An">Long An</option>
+                                                    <option value="Nam Định">Nam Định</option>
+                                                    <option value="Nghệ An">Nghệ An</option>
+                                                    <option value="Ninh Bình">Ninh Bình</option>
+                                                    <option value="Ninh Thuận">Ninh Thuận</option>
+                                                    <option value="Phú Thọ">Phú Thọ</option>
+                                                    <option value="Phú Yên">Phú Yên</option>
+                                                    <option value="Quảng Bình">Quảng Bình</option>
+                                                    <option value="Quảng Nam">Quảng Nam</option>
+                                                    <option value="Quảng Ngãi">Quảng Ngãi</option>
+                                                    <option value="Quảng Ninh">Quảng Ninh</option>
+                                                    <option value="Quảng Trị">Quảng Trị</option>
+                                                    <option value="Sóc Trăng">Sóc Trăng</option>
+                                                    <option value="Sơn La">Sơn La</option>
+                                                    <option value="Tây Ninh">Tây Ninh</option>
+                                                    <option value="Thái Bình">Thái Bình</option>
+                                                    <option value="Thái Nguyên">Thái Nguyên</option>
+                                                    <option value="Thanh Hóa">Thanh Hóa</option>
+                                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
+                                                    <option value="Tiền Giang">Tiền Giang</option>
+                                                    <option value="Trà Vinh">Trà Vinh</option>
+                                                    <option value="Tuyên Quang">Tuyên Quang</option>
+                                                    <option value="Vĩnh Long">Vĩnh Long</option>
+                                                    <option value="Vĩnh Phúc">Vĩnh Phúc</option>
+                                                    <option value="Yên Bái">Yên Bái</option>
+                                                </select>
+                                                <div class="invalid-feedback">Vui lòng chọn tỉnh/thành phố</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="shippingDistrict">Quận/Huyện <span class="text-danger">*</span></label>
+                                                <select class="form-control" id="shippingDistrict" name="shippingDistrict" required>
+                                                    <option value="">Chọn quận/huyện</option>
+                                                </select>
+                                                <div class="invalid-feedback">Vui lòng chọn quận/huyện</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="orderNote">Ghi chú</label>
+                                                <textarea class="form-control" id="orderNote" name="orderNote" rows="1" placeholder="Ghi chú thêm (không bắt buộc)"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>      
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                <button type="button" class="btn btn-success" id="confirmCodOrder">
+                                    <i class="fa fa-check"></i> Xác nhận đặt hàng
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -401,7 +1117,7 @@
                         </dl>
                         <hr>
                         <p class="text-center mb-3">
-                            <img src="~/content/images/misc/payments.png" height="26">
+                            <img src="~/content/img/misc/payments.png" height="26">
                         </p>
 
                     </div> <!-- card-body.// -->
@@ -436,3 +1152,344 @@
     </div><!-- container // -->
 </section>
 <!-- ========================= SECTION  END// ========================= -->
+
+<style>
+    /* COD Modal Styles */
+    #codModal .modal-content {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    #codModal .modal-header {
+        border-radius: 15px 15px 0 0;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    #codModal .card {
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    #codModal .card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Cải thiện modal styles */
+    #codModal .modal-content {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+
+    #codModal .modal-header {
+        border-radius: 20px 20px 0 0;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        padding: 20px 25px;
+        border-bottom: none;
+    }
+
+    #codModal .modal-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+    }
+
+    #codModal .modal-body {
+        padding: 25px;
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    #codModal .modal-footer {
+        padding: 20px 25px;
+        border-top: 1px solid #e2e8f0;
+        background: #f8fafc;
+    }
+
+    /* Cải thiện card styles */
+    #codModal .card {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: #ffffff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    #codModal .card:hover {
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    #codModal .card-body {
+        padding: 20px;
+    }
+
+    /* Cải thiện styling cho tất cả input fields */
+    #codModal .form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #2d3748;
+        transition: all 0.3s ease;
+        min-height: 48px;
+        background-color: #ffffff;
+    }
+
+    #codModal .form-control:hover {
+        border-color: #cbd5e0;
+        background-color: #f7fafc;
+    }
+
+    #codModal .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        background-color: #ffffff;
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    #codModal .form-control::placeholder {
+        color: #a0aec0;
+        font-style: italic;
+    }
+
+    #codModal .form-control.is-invalid {
+        border-color: #e53e3e;
+        box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    #codModal .form-control.is-invalid:focus {
+        border-color: #e53e3e;
+        box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2);
+    }
+
+    /* Styling cho textarea */
+    #codModal textarea.form-control {
+        resize: vertical;
+        min-height: 80px;
+        line-height: 1.5;
+    }
+
+    /* Cải thiện styling cho dropdown */
+    #codModal select.form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%234a5568' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        padding: 12px 40px 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #2d3748;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-height: 48px;
+    }
+
+    #codModal select.form-control:hover {
+        border-color: #cbd5e0;
+        background-color: #f7fafc;
+    }
+
+    #codModal select.form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        background-color: #ffffff;
+        outline: none;
+    }
+
+    #codModal select.form-control option {
+        padding: 12px;
+        font-size: 14px;
+        color: #2d3748;
+        background-color: #ffffff;
+    }
+
+    #codModal select.form-control option:hover {
+        background-color: #f7fafc;
+    }
+
+    /* Styling cho label */
+    #codModal .form-group label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    /* Cải thiện spacing */
+    #codModal .form-group {
+        margin-bottom: 20px;
+    }
+
+    #codModal .row .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Animation cho dropdown */
+    #codModal select.form-control {
+        transform: translateY(0);
+        transition: all 0.2s ease;
+    }
+
+    #codModal select.form-control:focus {
+        transform: translateY(-1px);
+    }
+
+    /* Hoàn thiện giao diện */
+    #codModal .btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    #codModal .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+    }
+
+    #codModal .btn-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    #codModal .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    }
+
+    /* Cải thiện alert styles */
+    #codModal .alert {
+        border-radius: 12px;
+        border: none;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+    }
+
+    #codModal .alert-info {
+        background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+    }
+
+    #codModal .alert-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    /* Loading animation cho dropdown */
+    #codModal select.form-control:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* VNPay Button Styles */
+    #vnpayPayment {
+        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        color: white;
+    }
+
+    #vnpayPayment:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+        background: linear-gradient(135deg, #e0a800 0%, #e55a00 100%);
+        color: white;
+        text-decoration: none;
+    }
+
+    #vnpayPayment:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Test VNPay Button Styles */
+    #testVNPayPayment {
+        background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+        color: white;
+    }
+
+    #testVNPayPayment:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(23, 162, 184, 0.4);
+        background: linear-gradient(135deg, #138496 0%, #5a32a3 100%);
+        color: white;
+        text-decoration: none;
+    }
+
+    #testVNPayPayment:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Test VNPay Config 2 Button Styles */
+    #testVNPayConfig2 {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        color: white;
+    }
+
+    #testVNPayConfig2:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+        color: white;
+        text-decoration: none;
+    }
+
+    #testVNPayConfig2:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Spinner animation */
+    .fa-spinner {
+        animation: fa-spin 1s linear infinite;
+    }
+</style>

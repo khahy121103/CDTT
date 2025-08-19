@@ -83,6 +83,10 @@
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <HintPath>..\packages\ExcelPackage.1.0.0\lib\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -243,6 +247,7 @@
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
+    <Compile Include="Models\Payment\VnPayLibrary.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2169,90 +2174,50 @@
     <Content Include="Content\fonts\fontawesome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\fonts\fontawesome\webfonts\fa-solid-900.svg" />
     <Content Include="Content\fonts\roboto\font.css" />
-    <Content Include="Content\images\avatars\avatar1.jpg" />
-    <Content Include="Content\images\avatars\avatar2.jpg" />
-    <Content Include="Content\images\avatars\avatar3.jpg" />
-    <Content Include="Content\images\banners\ad-sm.png" />
-    <Content Include="Content\images\banners\ad.png" />
-    <Content Include="Content\images\banners\ic1.jpg" />
-    <Content Include="Content\images\banners\slide1.jpg" />
-    <Content Include="Content\images\banners\slide2.jpg" />
-    <Content Include="Content\images\banners\slide3.jpg" />
-    <Content Include="Content\images\favicon.ico" />
-    <Content Include="Content\images\icons\flags\AU%402x.png" />
-    <Content Include="Content\images\icons\flags\AU.png" />
-    <Content Include="Content\images\icons\flags\CN%402x.png" />
-    <Content Include="Content\images\icons\flags\CN.png" />
-    <Content Include="Content\images\icons\flags\DE%402x.png" />
-    <Content Include="Content\images\icons\flags\DE.png" />
-    <Content Include="Content\images\icons\flags\GB%402x.png" />
-    <Content Include="Content\images\icons\flags\GB.png" />
-    <Content Include="Content\images\icons\flags\IN%402x.png" />
-    <Content Include="Content\images\icons\flags\IN.png" />
-    <Content Include="Content\images\icons\flags\RU%402x.png" />
-    <Content Include="Content\images\icons\flags\RU.png" />
-    <Content Include="Content\images\icons\flags\TR%402x.png" />
-    <Content Include="Content\images\icons\flags\TR.png" />
-    <Content Include="Content\images\icons\flags\US%402x.png" />
-    <Content Include="Content\images\icons\flags\US.png" />
-    <Content Include="Content\images\icons\flags\UZ%402x.png" />
-    <Content Include="Content\images\icons\flags\UZ.png" />
-    <Content Include="Content\images\icons\pay-american-ex.png" />
-    <Content Include="Content\images\icons\pay-bank.png" />
-    <Content Include="Content\images\icons\pay-mastercard.png" />
-    <Content Include="Content\images\icons\pay-visa-el.png" />
-    <Content Include="Content\images\icons\pay-visa.png" />
-    <Content Include="Content\images\items\1464775b-aeb9-4927-a20a-61cc10000227.png" />
-    <Content Include="Content\images\items\2ba26de1-7e3c-4c26-90d8-13c650c0bcc9.png" />
-    <Content Include="Content\images\items\39febad8-e306-45ce-9a3c-7201b1dd3cb8.png" />
-    <Content Include="Content\images\items\6a8c7730-5c92-4d3d-8d79-bf6a681fc36d.png" />
-    <Content Include="Content\images\items\6ab62eef-7309-4d4a-9b64-81c917523695.png" />
-    <Content Include="Content\images\items\997cb8f1-c051-4f14-b6f0-e582e2bda54a.png" />
-    <Content Include="Content\images\items\9e0f47d4-9398-4002-acc3-d8632e9770f6.png" />
-    <Content Include="Content\images\items\a405f197-87ec-42ef-8611-993ba8022a76.png" />
-    <Content Include="Content\images\items\accessories-category.png" />
-    <Content Include="Content\images\items\af912ad5-372b-40d4-878d-bec8173b22c2.png" />
-    <Content Include="Content\images\items\airpodspro2.png" />
-    <Content Include="Content\images\items\apple-logo.jpg" />
-    <Content Include="Content\images\items\appliance-category.png" />
-    <Content Include="Content\images\items\asus-logo.jpg" />
-    <Content Include="Content\images\items\audio-category.png" />
-    <Content Include="Content\images\items\camera-category.png" />
-    <Content Include="Content\images\items\d199188d-3550-40d4-9072-4d803b09c394.png" />
-    <Content Include="Content\images\items\de8052cb-6ea6-4d78-8d33-5f3987fe4d34.jpg" />
-    <Content Include="Content\images\items\dell-logo.jpg" />
-    <Content Include="Content\images\items\dellxps13.png" />
-    <Content Include="Content\images\items\e57e7295-a745-48e6-8e0d-26b1ca772937.png" />
-    <Content Include="Content\images\items\galaxys23ultra.png" />
-    <Content Include="Content\images\items\hp-logo.jpg" />
-    <Content Include="Content\images\items\huawei-logo.jpg" />
-    <Content Include="Content\images\items\ipadpro-m2.png" />
-    <Content Include="Content\images\items\iphone15promax.png" />
-    <Content Include="Content\images\items\jblcharge5.png" />
-    <Content Include="Content\images\items\laptop-category.png" />
-    <Content Include="Content\images\items\lg-logo.jpg" />
-    <Content Include="Content\images\items\lgoledc2.png" />
-    <Content Include="Content\images\items\macbookairm2.png" />
-    <Content Include="Content\images\items\office-equipment-category.png" />
-    <Content Include="Content\images\items\phone-category.png" />
-    <Content Include="Content\images\items\samsung-logo.jpg" />
-    <Content Include="Content\images\items\smartwatch-category.png" />
-    <Content Include="Content\images\items\sony-logo.jpg" />
-    <Content Include="Content\images\items\sonya7iv.png" />
-    <Content Include="Content\images\items\tablet-category.png" />
-    <Content Include="Content\images\items\tabs9.png" />
-    <Content Include="Content\images\items\tv-category.png" />
-    <Content Include="Content\images\items\xiaomi-logo.jpg" />
-    <Content Include="Content\images\logo-white.png" />
-    <Content Include="Content\images\logo.png" />
-    <Content Include="Content\images\logo.svg" />
-    <Content Include="Content\images\misc\appstore.png" />
-    <Content Include="Content\images\misc\payments.png" />
-    <Content Include="Content\images\misc\playmarket.png" />
-    <Content Include="Content\images\posts\1.jpg" />
-    <Content Include="Content\images\posts\2.jpg" />
-    <Content Include="Content\images\posts\3.jpg" />
-    <Content Include="Content\images\posts\4.jpg" />
+    <Content Include="Content\img\avatars\avatar1.jpg" />
+    <Content Include="Content\img\avatars\avatar2.jpg" />
+    <Content Include="Content\img\avatars\avatar3.jpg" />
+    <Content Include="Content\img\banners\ad-sm.png" />
+    <Content Include="Content\img\banners\ad.png" />
+    <Content Include="Content\img\banners\GUM Kaiza SHOP.png" />
+    <Content Include="Content\img\banners\ic1.jpg" />
+    <Content Include="Content\img\banners\slide1.jpg" />
+    <Content Include="Content\img\banners\slide2.jpg" />
+    <Content Include="Content\img\banners\slide3.jpg" />
+    <Content Include="Content\img\favicon.ico" />
+    <Content Include="Content\img\icons\flags\AU%402x.png" />
+    <Content Include="Content\img\icons\flags\AU.png" />
+    <Content Include="Content\img\icons\flags\CN%402x.png" />
+    <Content Include="Content\img\icons\flags\CN.png" />
+    <Content Include="Content\img\icons\flags\DE%402x.png" />
+    <Content Include="Content\img\icons\flags\DE.png" />
+    <Content Include="Content\img\icons\flags\GB%402x.png" />
+    <Content Include="Content\img\icons\flags\GB.png" />
+    <Content Include="Content\img\icons\flags\IN%402x.png" />
+    <Content Include="Content\img\icons\flags\IN.png" />
+    <Content Include="Content\img\icons\flags\RU%402x.png" />
+    <Content Include="Content\img\icons\flags\RU.png" />
+    <Content Include="Content\img\icons\flags\TR%402x.png" />
+    <Content Include="Content\img\icons\flags\TR.png" />
+    <Content Include="Content\img\icons\flags\US%402x.png" />
+    <Content Include="Content\img\icons\flags\US.png" />
+    <Content Include="Content\img\icons\flags\UZ%402x.png" />
+    <Content Include="Content\img\icons\flags\UZ.png" />
+    <Content Include="Content\img\icons\pay-american-ex.png" />
+    <Content Include="Content\img\icons\pay-bank.png" />
+    <Content Include="Content\img\icons\pay-mastercard.png" />
+    <Content Include="Content\img\icons\pay-visa-el.png" />
+    <Content Include="Content\img\icons\pay-visa.png" />
+    <Content Include="Content\img\logo-white.png" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logo.svg" />
+    <Content Include="Content\img\misc\appstore.png" />
+    <Content Include="Content\img\misc\payments.png" />
+    <Content Include="Content\img\misc\playmarket.png" />
+    <Content Include="Content\img\posts\1.jpg" />
+    <Content Include="Content\img\posts\2.jpg" />
+    <Content Include="Content\img\posts\3.jpg" />
+    <Content Include="Content\img\posts\4.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Context\dbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -2267,12 +2232,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
@@ -2403,14 +2362,10 @@
     <Content Include="Content\fonts\roboto\Roboto-Medium.ttf" />
     <Content Include="Content\fonts\roboto\Roboto-Regular.ttf" />
     <Content Include="Content\fonts\roboto\Roboto-Thin.ttf" />
-    <Content Include="Content\images\.DS_Store" />
-    <Content Include="Content\images\banners\.DS_Store" />
-    <Content Include="Content\images\icons\.DS_Store" />
-    <Content Include="Content\images\items\.DS_Store" />
-    <Content Include="Content\images\items\424c560f-1d2f-414d-8871-b7f4fa80798c.webp" />
-    <Content Include="Content\images\items\9c727f06-c340-48d5-9a57-aa1369d2e99a.webp" />
-    <Content Include="Content\images\items\d552b8ac-46b1-4b14-8311-ad3d6402d1de.webp" />
-    <Content Include="Content\images\posts\.DS_Store" />
+    <Content Include="Content\img\.DS_Store" />
+    <Content Include="Content\img\banners\.DS_Store" />
+    <Content Include="Content\img\icons\.DS_Store" />
+    <Content Include="Content\img\posts\.DS_Store" />
     <Content Include="Content\sass\.DS_Store" />
     <Content Include="Content\sass\bootstrap-assets\mixins\_alert.scss" />
     <Content Include="Content\sass\bootstrap-assets\mixins\_background-variant.scss" />
@@ -2526,31 +2481,26 @@
     <Content Include="Content\sass\ui-assets\sections\_sidebar.scss" />
     <Content Include="Content\sass\ui.scss" />
     <Content Include="Content\sass\_variables-custom.scss" />
-    <None Include="Scripts\jquery-3.7.0.intellisense.js" />
-    <Content Include="Scripts\jquery-3.7.0.js" />
-    <Content Include="Scripts\jquery-3.7.0.min.js" />
-    <Content Include="Scripts\jquery-3.7.0.slim.js" />
-    <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\js\countdown.js" />
-    <Content Include="Scripts\js\gmaps.min.js" />
-    <Content Include="Scripts\js\ion.rangeSlider.js" />
-    <Content Include="Scripts\js\jquery.ajaxchimp.min.js" />
-    <Content Include="Scripts\js\jquery.magnific-popup.min.js" />
-    <Content Include="Scripts\js\jquery.nice-select.min.js" />
-    <Content Include="Scripts\js\jquery.sticky.js" />
-    <Content Include="Scripts\js\main.js" />
-    <Content Include="Scripts\js\nouislider.min.js" />
-    <Content Include="Scripts\js\owl.carousel.min.js" />
-    <Content Include="Scripts\js\parallax.min.js" />
-    <Content Include="Scripts\js\vendor\bootstrap.min.js" />
-    <Content Include="Scripts\js\vendor\jquery-2.2.4.min.js" />
-    <Content Include="Scripts\js\vendor\popper.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="scripts\bootstrap.bundle.js" />
+    <Content Include="scripts\bootstrap.bundle.min.js" />
+    <Content Include="scripts\bootstrap.esm.js" />
+    <Content Include="scripts\bootstrap.esm.min.js" />
+    <Content Include="scripts\bootstrap.js" />
+    <Content Include="scripts\bootstrap.min.js" />
+    <None Include="scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="scripts\jquery-3.7.0.js" />
+    <Content Include="scripts\jquery-3.7.0.min.js" />
+    <Content Include="scripts\jquery-3.7.0.slim.js" />
+    <Content Include="scripts\jquery-3.7.0.slim.min.js" />
+    <None Include="scripts\jquery.validate-vsdoc.js" />
+    <Content Include="scripts\jquery.validate.js" />
+    <Content Include="scripts\jquery.validate.min.js" />
+    <Content Include="scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="scripts\js\bootstrap.bundle.min.js" />
+    <Content Include="scripts\js\jquery-2.0.0.min.js" />
+    <Content Include="scripts\js\script.js" />
+    <Content Include="scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2563,7 +2513,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\js\.DS_Store" />
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Home\Large.cshtml" />
     <Content Include="Views\Home\Grid.cshtml" />
@@ -2573,12 +2522,13 @@
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Category\_OrderDetailsPartial.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Content\img\items\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -2598,14 +2548,14 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.esm.min.js.map" />
-    <Content Include="Scripts\bootstrap.esm.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
-    <Content Include="Scripts\jquery-3.7.0.min.map" />
+    <Content Include="scripts\bootstrap.bundle.js.map" />
+    <Content Include="scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="scripts\bootstrap.esm.js.map" />
+    <Content Include="scripts\bootstrap.esm.min.js.map" />
+    <Content Include="scripts\bootstrap.js.map" />
+    <Content Include="scripts\bootstrap.min.js.map" />
+    <Content Include="scripts\jquery-3.7.0.min.map" />
+    <Content Include="scripts\jquery-3.7.0.slim.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

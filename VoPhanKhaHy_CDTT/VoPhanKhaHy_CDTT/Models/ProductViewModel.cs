@@ -18,6 +18,7 @@ namespace VoPhanKhaHy_CDTT.Models
         public string BrandName { get; set; }     // Thêm thuộc tính BrandName
         public string Image { get; set; }
         public string ShortDes { get; set; }
+        [AllowHtml]
         public string FullDescription { get; set; }
         public decimal Price { get; set; }
         public decimal? PriceDiscount { get; set; }

@@ -16,6 +16,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
 {
     public class ProductController : Controller
     {
+
         private WebAspDbEntities _context;
         // GET: Admin/Product
         public ProductController()
@@ -25,7 +26,12 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var product = _context.Products
+            .Include(p => p.Brand)
+            .Include(p => p.Category)
+            .ToList();
+
+            return View(product);
         }
         //public ActionResult ListProduct(int page = 1, int pageSize = 5)
         //{
@@ -72,6 +78,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [ValidateInput(false)]
         public ActionResult Create()
         {
             var model = new ProductViewModel
@@ -94,6 +101,26 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductViewModel model, HttpPostedFileBase image)
         {
+            // Kiểm tra giá khuyến mãi không được lớn hơn hoặc bằng giá gốc
+            if (model.PriceDiscount.HasValue && model.PriceDiscount.Value >= model.Price)
+            {
+                ModelState.AddModelError("PriceDiscount", "Giá khuyến mãi phải nhỏ hơn giá gốc");
+                
+                // Tạo lại dropdown data khi có lỗi
+                model.Categories = _context.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
+                model.Brands = _context.Brands.Select(b => new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Name
+                }).ToList();
+                
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 var product = new Product
@@ -109,7 +136,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                     TypeId = model.TypeId,
                     Slug = model.Slug,
                     CreatedAt = DateTime.Now,
-                    UpdatedAt = null,
+                    UpdatedAt = null,   
                     Deleted = false
                 };
 
@@ -165,57 +192,42 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
         {
             if (file != null && file.ContentLength > 0)
             {
-                var fileExt = Path.GetExtension(file.FileName);
-                if (fileExt != ".xlsx" && fileExt != ".xls")
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                var fileExtension = Path.GetExtension(file.FileName);
+                if (fileExtension != ".xlsx" && fileExtension != ".xls")
                 {
                     TempData["Error"] = "Chỉ hỗ trợ tệp Excel (.xlsx, .xls)";
                     return RedirectToAction("ListProduct");
                 }
 
-                // Thiết lập license trước khi khởi tạo ExcelPackage
-                ExcelPackage.License.SetNonCommercialPersonal("Your Name");
-                // hoặc SetNonCommercialOrganization("Your Org");
-                // Nếu dùng phép thương mại, dùng SetCommercial("<License Key>");
-
                 using (var package = new ExcelPackage(file.InputStream))
                 {
-                    var ws = package.Workbook.Worksheets.FirstOrDefault();
-                    if (ws?.Dimension == null)
-                    {
-                        TempData["Error"] = "Tệp Excel không có dữ liệu.";
-                        return RedirectToAction("ListProduct");
-                    }
+                    var worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
 
-                    for (int row = 2; row <= ws.Dimension.End.Row; row++)
+                    for (int row = 2; row <= rowCount; row++)
                     {
-                        try
+                        var product = new Product
                         {
-                            var product = new Product
-                            {
-                                Name = ws.Cells[row, 1].Text,
-                                Image = ws.Cells[row, 2].Text,
-                                CategoryId = int.Parse(ws.Cells[row, 3].Text),
-                                BrandId = int.Parse(ws.Cells[row, 4].Text),
-                                ShortDes = ws.Cells[row, 5].Text,
-                                ShowOnHomePage = ws.Cells[row, 6].Text.Trim().ToLower() == "yes",
-                                FullDescription = ws.Cells[row, 7].Text,
-                                Price = double.Parse(ws.Cells[row, 8].Text),
-                                PriceDiscount = double.Parse(ws.Cells[row, 9].Text),
-                                TypeId = int.Parse(ws.Cells[row, 10].Text),
-                                Slug = ws.Cells[row, 11].Text,
-                                CreatedAt = DateTime.Now,
-                                UpdatedAt = DateTime.Now,
-                                Deleted = ws.Cells[row, 12].Text.Trim().ToLower() == "yes"
-                            };
-                            _context.Products.Add(product);
-                        }
-                        catch (Exception ex)
-                        {
-                            TempData["Error"] = $"Lỗi tại dòng {row}: {ex.Message}";
-                            return RedirectToAction("ListProduct");
-                        }
-                    }
+                            Name = worksheet.Cells[row, 1].Text,
+                            Image = worksheet.Cells[row, 2].Text,
+                            CategoryId = int.Parse(worksheet.Cells[row, 3].Text),
+                            BrandId = int.Parse(worksheet.Cells[row, 4].Text),
+                            ShortDes = worksheet.Cells[row, 5].Text,
+                            ShowOnHomePage = worksheet.Cells[row, 6].Text.ToLower() == "yes",
+                            FullDescription = worksheet.Cells[row, 7].Text,
+                            Price = Convert.ToDouble(decimal.Parse(worksheet.Cells[row, 8].Text)),
+                            PriceDiscount = Convert.ToDouble(decimal.Parse(worksheet.Cells[row, 9].Text)),
+                            TypeId = int.Parse(worksheet.Cells[row, 10].Text),
+                            Slug = worksheet.Cells[row, 11].Text,
+                            CreatedAt = DateTime.Now,
+                            UpdatedAt = DateTime.Now,
+                            Deleted = worksheet.Cells[row, 12].Text.ToLower() == "yes"
+                        };
 
+                        _context.Products.Add(product);
+                    }
                     _context.SaveChanges();
                 }
 
@@ -396,6 +408,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
 
 
         [HttpGet]
+        [ValidateInput(false)]
         public ActionResult Edit(int id)
         {
             // Tìm sản phẩm trong cơ sở dữ liệu
@@ -414,7 +427,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                 BrandId = product.BrandId,
                 Image = product.Image,
                 ShortDes = product.ShortDes,
-                FullDescription = product.FullDescription,
+                FullDescription =product.FullDescription,
                 Price = Convert.ToDecimal(product.Price), // Chuyển đổi từ double sang decimal
                 PriceDiscount = product.PriceDiscount.HasValue ? Convert.ToDecimal(product.PriceDiscount) : (decimal?)null, // Chuyển đổi với kiểu nullable
                 ShowOnHomePage = product.ShowOnHomePage ?? false,
@@ -440,8 +453,16 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Edit(Product product, HttpPostedFileBase image)
         {
+            // Kiểm tra giá khuyến mãi không được lớn hơn hoặc bằng giá gốc
+            if (product.PriceDiscount.HasValue && product.PriceDiscount.Value >= product.Price)
+            {
+                ModelState.AddModelError("PriceDiscount", "Giá khuyến mãi phải nhỏ hơn giá gốc");
+                return View(product);
+            }
+
             if (ModelState.IsValid)
             {
                 var existingProduct = _context.Products.Find(product.Id);
@@ -525,7 +546,6 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
 
             return View(model);
         }
-        [HttpGet]
         public ActionResult Trash(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
@@ -534,13 +554,23 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
+            // Kiểm tra xem sản phẩm có đang được sử dụng trong đơn hàng nào không
+            var orderDetails = _context.OrderDetails.Where(od => od.ProductId == id).ToList();
+            if (orderDetails.Any())
+            {
+                int orderCount = orderDetails.Select(od => od.OrderId).Distinct().Count();
+                TempData["Error"] = $"Không thể xóa sản phẩm '{product.Name}' vì nó đang được sử dụng trong {orderCount} đơn hàng!";
+                return RedirectToAction("ListProduct");
+            }
+
             // Đánh dấu sản phẩm là đã xóa
             product.Deleted = true;
             _context.SaveChanges();
 
-            TempData["Success"] = "Sản phẩm đã được chuyển vào thùng rác!";
+            TempData["Success"] = $"Sản phẩm '{product.Name}' đã được chuyển vào thùng rác!";
             return RedirectToAction("ListProduct");
         }
+
         [HttpGet]
         public ActionResult Restore(int id)
         {
@@ -580,6 +610,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
             TempData["Success"] = "Sản phẩm đã được xóa vĩnh viễn!";
             return RedirectToAction("ListTrash");
         }
+
         [HttpPost]
         public ActionResult UpdateShowOnHomePage(int id, bool showOnHomePage)
         {

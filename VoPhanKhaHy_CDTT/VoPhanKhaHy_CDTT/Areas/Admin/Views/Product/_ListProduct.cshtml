@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<VoPhanKhaHy_CDTT.Context.Product>
 
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -18,14 +17,11 @@
         </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-
                     <div class="card-tools d-flex">
-                        <!-- Nút Thêm mới sản phẩm -->
                         <a href="@Url.Action("Create", "Product")" class="btn btn-primary btn-sm mr-3">
                             <i class="fas fa-plus"></i> Thêm mới
                         </a>
@@ -38,8 +34,6 @@
                         <a href="@Url.Action("ListTrash", "Product")" class="btn btn-danger btn-sm mr-3">
                             <i class="fas fa-trash-alt"></i> Thùng rác
                         </a>
-
-                        <!-- Form nhập Excel -->
                         <form action="@Url.Action("ImportExcel", "Product", new { area = "Admin" })" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
                             @Html.AntiForgeryToken()
                             <input type="file" name="file" class="form-control-file mr-3" />
@@ -74,13 +68,13 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                        <td>@item.Name</td>
                                         <td>
                                             <img src="@Url.Content("~/Content/img/items/" + item.Image)" alt="@item.Image" class="img-thumbnail" style="width: 200px;">
                                         </td>
-                                        <td>@Html.DisplayFor(modelItem => item.CategoryId)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.BrandId)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.ShortDes)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Brand.Name)</td>
+                                        <td>@item.ShortDes</td>
                                         <td>
                                             @if (item.ShowOnHomePage == true)
                                             {
@@ -95,17 +89,14 @@
                                                 </button>
                                             }
                                         </td>
-
-
-
-
-                                        <td>@Html.DisplayFor(modelItem => item.FullDescription)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.PriceDiscount)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.TypeId)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
-
+                                        <td>@Html.Raw(System.Text.RegularExpressions.Regex.Replace(item.FullDescription ?? "", "<.*?>", ""))</td>
+                                        <td>@item.Price</td>
+                                        <td>@item.PriceDiscount</td>
+                                        <td>
+                                            @(item.TypeId == 1 ? "Đề xuất" : item.TypeId == 2 ? "Giảm giá" : "Bình thường")
+                                        </td>
+                                        <td>@item.CreatedAt</td>    
+                                        <td>@item.UpdatedAt</td>
                                         <td>
                                             <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-warning" style="font-size: 12px;">
                                                 <i class="fas fa-edit"></i> Sửa
@@ -117,46 +108,25 @@
                                                 <i class="fas fa-trash"></i> Vứt
                                             </a>
                                         </td>
-
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <!-- Phân trang đơn giản -->
+
                 <nav aria-label="Pagination" class="mt-4">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1" aria-label="First">
-                                &laquo; Đầu
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=2">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=3">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=4">4</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=5">5</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=5" aria-label="Last">
-                                Cuối &raquo;
-                            </a>
-                        </li>
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo; Đầu</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=4">4</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=5">5</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=5">Cuối &raquo;</a></li>
                     </ul>
                 </nav>
-
             </div>
         </div>
     </section>
 </div>
-

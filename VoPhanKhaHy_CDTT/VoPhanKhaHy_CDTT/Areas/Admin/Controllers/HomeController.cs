@@ -30,11 +30,11 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
 
             var totalOrders = _context.Orders.Count(); // Đếm tổng số đơn hàng
 
+            // Tính tổng doanh thu từ các đơn hàng đã hoàn thành (status = 4)
             decimal totalRevenue = _context.OrderDetails
-    .AsEnumerable() // Đẩy dữ liệu vào RAM, xử lý trên C#
-    .Sum(od => (decimal)od.TotalPrice);
-
-
+                .Where(od => od.Order.Status == 4) // Chỉ tính đơn hàng đã giao hàng
+                .AsEnumerable() // Đẩy dữ liệu vào RAM, xử lý trên C#
+                .Sum(od => (decimal)od.TotalPrice);
 
             ViewBag.TotalOrders = totalOrders;
             ViewBag.TotalUsers = totalUsers;

@@ -10,7 +10,7 @@ else
     @foreach (var product in Model)
     {
         <li class="list-group-item d-flex align-items-center">
-            <img src="~/content/images/items/@product.Image" alt="@product.Name" class="img-thumbnail" style="width: 100px; height: auto; margin-right: 15px;" />
+            <img src="~/content/img/items/@product.Image" alt="@product.Name" class="img-thumbnail" style="width: 100px; height: auto; margin-right: 15px;" />
             <div>
                 <a href="/Product/Detail/@product.Id">@product.Name</a>
                 <p class="text-muted">@product.ShortDes</p>

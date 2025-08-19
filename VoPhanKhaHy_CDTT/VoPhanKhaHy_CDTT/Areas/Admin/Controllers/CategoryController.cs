@@ -89,17 +89,50 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                 // Kiểm tra xem có hình ảnh không
                 if (image != null && image.ContentLength > 0)
                 {
-                    // Tạo tên tệp duy nhất cho hình ảnh
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                    // Validate file type
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
+                    var fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
+                    
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        ModelState.AddModelError("Image", "Chỉ chấp nhận file ảnh: JPG, JPEG, PNG, GIF, BMP");
+                        return View(category);
+                    }
 
-                    // Đường dẫn lưu hình ảnh trong thư mục Images
-                    var filePath = Path.Combine(Server.MapPath("~/Content/img/items/"), fileName);
+                    // Validate file size (max 5MB)
+                    if (image.ContentLength > 5 * 1024 * 1024)
+                    {
+                        ModelState.AddModelError("Image", "Kích thước file không được vượt quá 5MB");
+                        return View(category);
+                    }
 
-                    // Lưu hình ảnh vào thư mục
-                    image.SaveAs(filePath);
+                    try
+                    {
+                        // Tạo tên tệp duy nhất cho hình ảnh
+                        var fileName = Guid.NewGuid().ToString() + fileExtension;
 
-                    // Lưu tên tệp hình ảnh vào cơ sở dữ liệu
-                    category.Image = fileName;
+                        // Đường dẫn lưu hình ảnh trong thư mục Images
+                        var uploadPath = Server.MapPath("~/Content/img/items/");
+                        
+                        // Đảm bảo thư mục tồn tại
+                        if (!Directory.Exists(uploadPath))
+                        {
+                            Directory.CreateDirectory(uploadPath);
+                        }
+                        
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        // Lưu hình ảnh vào thư mục
+                        image.SaveAs(filePath);
+
+                        // Lưu tên tệp hình ảnh vào cơ sở dữ liệu
+                        category.Image = fileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("Image", "Lỗi khi lưu file: " + ex.Message);
+                        return View(category);
+                    }
                 }
                 category.CreatedAt = DateTime.Now;
                 category.UpdatedAt = null;
@@ -110,6 +143,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                 _context.Categories.Add(category);
                 _context.SaveChanges();
 
+                TempData["Success"] = "Thêm danh mục thành công!";
                 return RedirectToAction("ListCategory");
             }
 
@@ -158,29 +192,62 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                 // Nếu có ảnh mới, cập nhật ảnh
                 if (image != null && image.ContentLength > 0)
                 {
-                    // Xóa ảnh cũ nếu tồn tại
-                    if (!string.IsNullOrEmpty(existingCategory.Image))
+                    // Validate file type
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
+                    var fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
+                    
+                    if (!allowedExtensions.Contains(fileExtension))
                     {
-                        var oldPath = Path.Combine(Server.MapPath("~/Content/img/items"), existingCategory.Image);
-                        if (System.IO.File.Exists(oldPath))
-                        {
-                            System.IO.File.Delete(oldPath);
-                        }
+                        ModelState.AddModelError("Image", "Chỉ chấp nhận file ảnh: JPG, JPEG, PNG, GIF, BMP");
+                        return View(category);
                     }
 
-                    // Lưu ảnh mới
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                    var filePath = Path.Combine(Server.MapPath("~/Content/img/items"), fileName);
-                    image.SaveAs(filePath);
-                    existingCategory.Image = fileName;
+                    // Validate file size (max 5MB)
+                    if (image.ContentLength > 5 * 1024 * 1024)
+                    {
+                        ModelState.AddModelError("Image", "Kích thước file không được vượt quá 5MB");
+                        return View(category);
+                    }
+
+                    try
+                    {
+                        // Xóa ảnh cũ nếu tồn tại
+                        if (!string.IsNullOrEmpty(existingCategory.Image))
+                        {
+                            var oldPath = Path.Combine(Server.MapPath("~/Content/img/items/"), existingCategory.Image);
+                            if (System.IO.File.Exists(oldPath))
+                            {
+                                System.IO.File.Delete(oldPath);
+                            }
+                        }
+
+                        // Lưu ảnh mới
+                        var fileName = Guid.NewGuid().ToString() + fileExtension;
+                        var uploadPath = Server.MapPath("~/Content/img/items/");
+                        
+                        // Đảm bảo thư mục tồn tại
+                        if (!Directory.Exists(uploadPath))
+                        {
+                            Directory.CreateDirectory(uploadPath);
+                        }
+                        
+                        var filePath = Path.Combine(uploadPath, fileName);
+                        image.SaveAs(filePath);
+                        existingCategory.Image = fileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("Image", "Lỗi khi lưu file: " + ex.Message);
+                        return View(category);
+                    }
                 }
 
                 _context.SaveChanges();
-                TempData["Success"] = "Cập nhật thương hiệu thành công!";
+                TempData["Success"] = "Cập nhật danh mục thành công!";
                 return RedirectToAction("ListCategory");
             }
 
-            TempData["Error"] = "Có lỗi xảy ra khi cập nhật thương hiệu!";
+            TempData["Error"] = "Có lỗi xảy ra khi cập nhật danh mục!";
             return View(category);
         }
         public ActionResult Delete(int id)
@@ -191,13 +258,41 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            // Xóa sản phẩm khỏi cơ sở dữ liệu
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            try
+            {
+                // Kiểm tra: nếu category đang chứa sản phẩm thì không cho xóa
+                var hasProducts = _context.Products.Any(p => p.CategoryId == id);
+                if (hasProducts)
+                {
+                    TempData["Error"] = "Không thể xóa danh mục vì vẫn còn sản phẩm thuộc danh mục này!";
+                    return RedirectToAction("ListCategory");
+                }
 
-            TempData["Success"] = "Thương hiệu đã được xóa vĩnh viễn!";
+                // Xóa ảnh cũ nếu có
+                if (!string.IsNullOrEmpty(category.Image))
+                {
+                    var imagePath = Path.Combine(Server.MapPath("~/Content/img/items/"), category.Image);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                // Xóa category
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+
+                TempData["Success"] = "Danh mục đã được xóa thành công!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Lỗi khi xóa danh mục: " + ex.Message;
+            }
+
             return RedirectToAction("ListCategory");
         }
+
+
         [HttpPost]
         public ActionResult UpdateShowOnHomePage(int id, bool showOnHomePage)
         {

@@ -12,7 +12,7 @@
 
     <title>Website title - bootstrap html template</title>
 
-    <link href="~/content/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="~/content/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
 
 </head>
@@ -55,13 +55,13 @@
                                 </ol>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="~/content/images/banners/slide1.jpg" alt="First slide">
+                                        <img src="~/content/img/banners/GUM Kaiza SHOP.png" alt="First slide">
                                     </div>
-                                    <div class="carousel-item">
-                                        <img src="~/content/images/banners/slide2.jpg" alt="Second slide">
+                                    <div class="carousel-item active">
+                                        <img src="~/content/img/banners/GUM Kaiza SHOP.png" alt="First slide">
                                     </div>
-                                    <div class="carousel-item">
-                                        <img src="~/content/images/banners/slide3.jpg" alt="Third slide">
+                                    <div class="carousel-item active">
+                                        <img src="~/content/img/banners/GUM Kaiza SHOP.png" alt="First slide">
                                     </div>
                                 </div>
                                 <a class="carousel-control-prev" href="#carousel1_indicator" role="button" data-slide="prev">
@@ -86,7 +86,7 @@
                                             <h6 class="card-title">@item.Name</h6>
                                             <a href="@Url.Action("Grid", "Home", new { @Id = item.Id },null)" class="btn btn-secondary btn-sm"> Mua ngay </a>
                                         </div>
-                                        <img src="~/content/images/items/@item.Image" height="80" class="img-bg">
+                                        <img src="~/content/img/items/@item.Image" height="80" class="img-bg">
                                     </div>
                                 }
 
@@ -121,7 +121,7 @@
                         <div class="col-md col-6">
                             <figure class="card-product-grid card-sm">
                                 <a href="@Url.Action("Detail", "Product", new {Id=item.Id})" class="img-wrap">
-                                    <img src="~/content/images/items/@item.Image">
+                                    <img src="~/content/img/items/@item.Image">
                                 </a>
                                 <div class="text-wrap p-3">
 
@@ -148,12 +148,8 @@
                         <div class="col-md-3">
 
                             <div class="home-category-banner bg-light-orange">
-                                <h5 class="title">Sản phẩm nổi bật từ @brand.Name</h5>
-                                <p>
-                                    Sự apisisis sẽ được tuân theo, nhưng nó sẽ xảy ra cùng lúc với một số lao động và đau đớn lớn lao.
-                                </p>
-                                <a href="#" class="btn btn-outline-primary rounded-pill">Mua ngay</a>
-                                <img src="~/content/images/items/@brand.Image" class="img-bg">
+                                
+                                <img src="~/content/img/items/@brand.Image" class="img-bg">
                             </div>
                         </div> <!-- col.// -->
                         <div class="col-md-9">
@@ -165,7 +161,7 @@
 
                                             <div class="card-body">
                                                 <h6 class="title">@item.ShortDes  </h6>
-                                                <img class="img-sm float-right" src="~/content/images/items/@item.Image">
+                                                <img class="img-sm float-right" src="~/content/img/items/@item.Image">
                                                 <p class="text-muted"><i class="fa fa-map-marker-alt"></i> Guanjou, China</p>
                                             </div>
                                         </a>
@@ -188,7 +184,7 @@
 
             <div class="row">
                 <div class="col-md-8">
-                    <div class="card-banner banner-quote overlay-gradient" style="background-image: url('~/content/images/banners/banner9.jpg');">
+                    <div class="card-banner banner-quote overlay-gradient" style="background-image: url('~/content/img/banners/banner9.jpg');">
                         <div class="card-img-overlay white">
                             <h3 class="card-title">Một cách dễ dàng để gửi yêu cầu đến nhà cung cấp</h3>
                             <p class="card-text" style="max-width: 400px">
@@ -255,7 +251,7 @@
                 {
                     <div class="col-xl-2 col-lg-3 col-md-4 col-6">
                         <div href="#" class="card card-sm card-product-grid">
-                            <a href="@Url.Action("Detail", "Product", new {Id=item.Id})" class="img-wrap"> <img src="~/content/images/items/@item.Image"> </a>
+                            <a href="@Url.Action("Detail", "Product", new {Id=item.Id})" class="img-wrap"> <img src="~/content/img/items/@item.Image"> </a>
                             <figcaption class="info-wrap">
                                 @Html.ActionLink(item.Name, "Detail", "Product", new { Id = item.Id }, null)
                                 <div class="price mt-1">@item.Price</div> <!-- price-wrap.// -->
@@ -269,7 +265,7 @@
         </section>
         <!-- =============== SECTION ITEMS .//END =============== -->
         <!-- =============== SECTION SERVICES =============== -->
-        <section class="padding-bottom">
+        <!--<section class="padding-bottom">
 
             <header class="section-heading heading-line">
                 <h4 class="title-section text-uppercase">Dịch vụ thương mại</h4>
@@ -285,27 +281,27 @@
                                 Bảo vệ đơn hàng
                             </p>
                         </div>
-                    </article> <!-- card.// -->
-                </div> <!-- col.// -->
-                <div class="col-md-3 col-sm-6">
+                    </article>--> <!-- card.// -->
+                <!--</div>--> <!-- col.// -->
+                <!--<div class="col-md-3 col-sm-6">
                     <article class="card card-post">
                         <img src="~/content/images/posts/2.jpg" class="card-img-top">
                         <div class="card-body">
                             <h6 class="title">Thanh toán bất cứ lúc nào</h6>
                             <p class="small text-uppercase text-muted">Giải pháp tài chính</p>
                         </div>
-                    </article> <!-- card.// -->
-                </div> <!-- col.// -->
-                <div class="col-md-3 col-sm-6">
+                    </article>--> <!-- card.// -->
+                <!--</div>--> <!-- col.// -->
+                <!--<div class="col-md-3 col-sm-6">
                     <article class="card card-post">
                         <img src="~/content/images/posts/3.jpg" class="card-img-top">
                         <div class="card-body">
                             <h6 class="title">Giải pháp kiểm tra</h6>
                             <p class="small text-uppercase text-muted">Kiểm tra dễ dàng</p>
                         </div>
-                    </article> <!-- card.// -->
-                </div> <!-- col.// -->
-                <div class="col-md-3 col-sm-6">
+                    </article>--> <!-- card.// -->
+                <!--</div>--> <!-- col.// -->
+                <!--<div class="col-md-3 col-sm-6">
                     <article class="card card-post">
                         <img src="~/content/images/posts/4.jpg" class="card-img-top">
                         <div class="card-body">
@@ -314,14 +310,14 @@
                             </h6>
                             <p class="small text-uppercase text-muted">Dịch vụ hậu cần</p>
                         </div>
-                    </article> <!-- card.// -->
-                </div> <!-- col.// -->
-            </div> <!-- row.// -->
+                    </article>--> <!-- card.// -->
+                <!--</div>--> <!-- col.// -->
+            <!--</div>--> <!-- row.// -->
 
-        </section>
+        <!--</section>-->
         <!-- =============== SECTION SERVICES .//END =============== -->
         <!-- =============== SECTION REGION =============== -->
-        <section class="padding-bottom">
+        <!--<section class="padding-bottom">
 
             <header class="section-heading heading-line">
                 <h4 class="title-section text-uppercase">Chọn vùng</h4>
@@ -338,13 +334,13 @@
                 <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/content/images/icons/flags/UZ.png"> <span>Uzbekistan</span> </a></li>
                 <li class="col-md col-6"><a href="#" class="icontext"> <i class="mr-3 fa fa-ellipsis-h"></i> <span>More regions</span> </a></li>
             </ul>
-        </section>
+        </section>-->
         <!-- =============== SECTION REGION .//END =============== -->
 
-        <article class="my-4">
-            <img src="~/content/images/banners/ad-sm.png" class="w-100">
+        <!--<article class="my-4">
+            <img src="~/content/img/banners/ad-sm.png" class="w-100">
         </article>
-    </div>
+    </div>-->
     <!-- container end.// -->
 
 

@@ -31,105 +31,117 @@
                     {
                         @Html.AntiForgeryToken()
 
-                        <div class="form-horizontal">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.Id)
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Id)
 
-                            <div class="form-group">
-                                <label for="Name">Tên sản phẩm</label>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sản phẩm" } })
-                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Image">Hình ảnh</label>
-                                <input type="file" name="image" class="form-control-file" />
-                                @if (!string.IsNullOrEmpty(Model.Image))
-                                {
-                                    <div class="mt-3">
-                                        <img src="@Url.Content("~/Content/img/items/" + Model.Image)" alt="Product Image" class="img-thumbnail" style="width: 200px;">
-                                    </div>
-                                }
-                                else
-                                {
-                                    <p>Không có hình ảnh nào.</p>
-                                }
-
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="CategoryId">Danh mục</label>
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.CategoryId, Model.Categories, "Select a category", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="BrandId">Thương hiệu</label>
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.BrandId, Model.Brands, "Select a brand", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="ShortDes">Mô tả ngắn</label>
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.ShortDes, new { @class = "form-control", placeholder = "Enter a short description", rows = 3 })
-                                    @Html.ValidationMessageFor(model => model.ShortDes, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="ShowOnHomePage">Hiển thị</label>
-                                <div class="col-md-10">
-                                    @Html.CheckBox("ShowOnHomePage", Model.ShowOnHomePage ?? false)
-                                    @Html.ValidationMessageFor(model => model.ShowOnHomePage, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="TypeId">Kiểu hiển thị</label>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.TypeId, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập kiểu hiển thị" } })
-                                    @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="FullDescription">Mô tả chi tiết</label>
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.FullDescription, new { @class = "form-control", placeholder = "Enter a full description", rows = 5 })
-                                    @Html.ValidationMessageFor(model => model.FullDescription, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Price">Giá</label>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter price" } })
-                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="PriceDiscount">Sale</label>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.PriceDiscount, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter discounted price" } })
-                                    @Html.ValidationMessageFor(model => model.PriceDiscount, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Lưu" class="btn btn-primary" />
-                                </div>
+                        <div class="form-group">
+                            <label for="Name">Tên sản phẩm</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sản phẩm" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="Image">Hình ảnh</label>
+                            <input type="file" name="image" class="form-control-file" />
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <div class="mt-3">
+                                    <img src="@Url.Content("~/Content/img/items/" + Model.Image)" alt="Product Image" class="img-thumbnail" style="width: 200px;">
+                                </div>
+                            }
+                            else
+                            {
+                                <p>Không có hình ảnh nào.</p>
+                            }
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="CategoryId">Danh mục</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.CategoryId, Model.Categories, "Select a category", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="BrandId">Thương hiệu</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.BrandId, Model.Brands, "Select a brand", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ShortDes">Mô tả ngắn</label>
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.ShortDes, new { @class = "form-control", placeholder = "Enter a short description", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.ShortDes, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ShowOnHomePage">Hiển thị</label>
+                            <div class="col-md-10">
+                                @Html.CheckBox("ShowOnHomePage", Model.ShowOnHomePage ?? false)
+                                @Html.ValidationMessageFor(model => model.ShowOnHomePage, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="TypeId">Kiểu hiển thị</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.TypeId,
+                                              new List<SelectListItem>
+                                              {
+                                            new SelectListItem { Text = "Đề xuất", Value = "1", Selected = Model.TypeId == 1 },
+                                            new SelectListItem { Text = "Giảm giá", Value = "2", Selected = Model.TypeId == 2 }
+                                },
+                                              new { @class = "form-control" }
+                                          )
+                                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="FullDescription">Mô tả chi tiết</label>
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.FullDescription, new { @class = "form-control", id = "FullDescription", placeholder = "Nhập mô tả chi tiết", rows = 5 })
+                                @Html.ValidationMessageFor(model => model.FullDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Giá gốc -->
+                        <div class="form-group">
+                            <label for="Price">Giá gốc</label>
+                            <div class="col-md-10">
+                                <input type="number" id="Price" name="Price" class="form-control" placeholder="Nhập giá gốc" value="@Model.Price" min="0" step="0.01" />
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                <small class="form-text text-muted">Giá gốc phải lớn hơn 0</small>
+                            </div>
+                        </div>
+
+                        <!-- Giá khuyến mãi -->
+                        <div class="form-group">
+                            <label for="PriceDiscount">Giá khuyến mãi</label>
+                            <div class="col-md-10">
+                                <input type="number" id="PriceDiscount" name="PriceDiscount" class="form-control" placeholder="Nhập giá khuyến mãi (không bắt buộc)" value="@Model.PriceDiscount" min="0" step="0.01" />
+                                @Html.ValidationMessageFor(model => model.PriceDiscount, "", new { @class = "text-danger" })
+                                <small class="form-text text-muted">Giá khuyến mãi phải nhỏ hơn giá gốc</small>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Lưu" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
                     }
 
                 </div>
@@ -137,3 +149,66 @@
         </div>
     </section>
 </div>
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('FullDescription', {
+        language: 'vi',
+        height: 300
+    });
+
+    // Kiểm tra giá khuyến mãi không lớn hơn hoặc bằng giá gốc
+    function validateDiscount(priceEl, discountEl) {
+        discountEl.addEventListener('blur', function () {
+            let price = parseFloat(priceEl.value || '0');
+            let discount = parseFloat(discountEl.value || '0');
+
+            if (discount > 0 && discount >= price) {
+                alert('⚠ Giá khuyến mãi phải nhỏ hơn giá gốc!');
+                discountEl.value = '';
+                discountEl.focus();
+            }
+        });
+    }
+
+    // Kiểm tra giá gốc phải lớn hơn 0
+    function validatePrice(priceEl) {
+        priceEl.addEventListener('blur', function () {
+            let price = parseFloat(this.value || '0');
+            if (price <= 0) {
+                alert('⚠ Giá gốc phải lớn hơn 0!');
+                this.value = '';
+                this.focus();
+            }
+        });
+    }
+
+    let priceInput = document.getElementById('Price');
+    let discountInput = document.getElementById('PriceDiscount');
+
+    // Áp dụng validation
+    validatePrice(priceInput);
+    validateDiscount(priceInput, discountInput);
+
+    // Kiểm tra validation trước khi submit
+    document.querySelector("form").addEventListener("submit", function (e) {
+        let price = parseFloat(priceInput.value || '0');
+        let discount = parseFloat(discountInput.value || '0');
+
+        // Kiểm tra giá gốc
+        if (price <= 0) {
+            alert('⚠ Giá gốc phải lớn hơn 0!');
+            e.preventDefault();
+            priceInput.focus();
+            return false;
+        }
+
+        // Kiểm tra giá khuyến mãi
+        if (discount > 0 && discount >= price) {
+            alert('⚠ Giá khuyến mãi phải nhỏ hơn giá gốc!');
+            e.preventDefault();
+            discountInput.focus();
+            return false;
+        }
+    });
+</script>

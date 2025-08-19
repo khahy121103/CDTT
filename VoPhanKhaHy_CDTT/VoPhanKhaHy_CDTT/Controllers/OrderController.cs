@@ -45,28 +45,46 @@ namespace VoPhanKhaHy_CDTT.Controllers
         {
             try
             {
-                var orderDetails = _context.OrderDetails
-                                           .Where(od => od.OrderId == id)
-                                           .Select(od => new OrderDetailDTO
-                                           {
-                                               ProductId = od.ProductId,
-                                               Quantity = od.Quantity,
-                                               Price = od.Price,
-                                               TotalPrice = od.TotalPrice,
-                                               CreatedAt = od.CreatedAt
-                                           })
-                                           .ToList();
+                // Kiểm tra đăng nhập
+                if (Session["idUser"] == null)
+                {
+                    return Json(new { error = "Bạn cần đăng nhập để xem chi tiết đơn hàng." }, JsonRequestBehavior.AllowGet);
+                }
+
+                int userId = (int)Session["idUser"];
+
+                // Kiểm tra đơn hàng có thuộc về user hiện tại không
+                var order = _context.Orders.FirstOrDefault(o => o.Id == id && o.UserId == userId);
+                if (order == null)
+                {
+                    return Json(new { error = "Không tìm thấy đơn hàng hoặc bạn không có quyền xem đơn hàng này." }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Lấy chi tiết đơn hàng với thông tin sản phẩm
+                var orderDetails = (from od in _context.OrderDetails
+                                   join p in _context.Products on od.ProductId equals p.Id
+                                   where od.OrderId == id
+                                   select new OrderDetailDTO
+                                   {
+                                       ProductId = od.ProductId,
+                                       ProductName = p.Name,
+                                       ProductImage = p.Image,
+                                       Quantity = od.Quantity,
+                                       Price = od.Price,
+                                       TotalPrice = od.TotalPrice,
+                                       CreatedAt = od.CreatedAt
+                                   }).ToList();
 
                 if (!orderDetails.Any())
                 {
-                    return Content("Không tìm thấy chi tiết đơn hàng.");
+                    return Json(new { error = "Không tìm thấy chi tiết đơn hàng." }, JsonRequestBehavior.AllowGet);
                 }
 
-                return PartialView("_OrderDetailsPartial", orderDetails);
+                return Json(orderDetails, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Content("Lỗi: " + ex.Message);
+                return Json(new { error = "Lỗi: " + ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]

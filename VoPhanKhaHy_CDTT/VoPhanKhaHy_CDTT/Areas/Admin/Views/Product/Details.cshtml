@@ -75,7 +75,7 @@
 
                             <div class="form-group">
                                 <h5>Mô tả đầy đủ:</h5>
-                                <p>@Model.FullDescription</p>
+                                <p>@Html.Raw(System.Text.RegularExpressions.Regex.Replace(Model.FullDescription ?? "", "<.*?>", ""))</p>
                             </div>
                         </div>
 

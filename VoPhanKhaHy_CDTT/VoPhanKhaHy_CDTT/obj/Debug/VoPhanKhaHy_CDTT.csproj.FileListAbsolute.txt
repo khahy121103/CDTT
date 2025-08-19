@@ -196,3 +196,7 @@ D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\Google.Apis.Auth.Mvc.pdb
 D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\Google.Apis.Auth.Mvc.xml
 D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\Google.Apis.Core.pdb
 D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\Google.Apis.Core.xml
+D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\EPPlus.System.Drawing.dll
+D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\System.Drawing.Common.dll
+D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\System.Drawing.Common.pdb
+D:\Desktop\CDTT\VoPhanKhaHy_CDTT\VoPhanKhaHy_CDTT\bin\System.Drawing.Common.xml
