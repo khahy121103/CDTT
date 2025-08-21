@@ -319,70 +319,104 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
         {
             try
             {
-                // Lấy danh sách sản phẩm từ cơ sở dữ liệu
-                var products = _context.Products.ToList();
+                // Lấy danh sách sản phẩm kèm danh mục và thương hiệu
+                var products = _context.Products
+                                       .Include(p => p.Category)
+                                       .Include(p => p.Brand)
+                                       .ToList();
 
-                // Tạo file PDF
                 using (var stream = new MemoryStream())
                 {
-                    // Tạo document PDF
                     var document = new Document(PageSize.A4, 10, 10, 20, 20);
                     PdfWriter.GetInstance(document, stream);
                     document.Open();
 
-                    // Thêm tiêu đề                  
-                    var titleFont = iTextSharp.text.FontFactory.GetFont("Arial", 18, iTextSharp.text.Font.BOLD, BaseColor.BLUE);
-                    var textFont = iTextSharp.text.FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.NORMAL);
-                    var headerFont = iTextSharp.text.FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.BOLD, BaseColor.WHITE);
+                    // Font Unicode để hiển thị tiếng Việt
+                    string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "arial.ttf");
+                    BaseFont bf = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
+                    var titleFont = new Font(bf, 18, Font.BOLD, BaseColor.BLUE);
+                    var textFont = new Font(bf, 12, Font.NORMAL, BaseColor.BLACK);
+                    var headerFont = new Font(bf, 12, Font.BOLD, BaseColor.WHITE);
+
+                    // Tiêu đề
                     var title = new Paragraph("Danh Sách Sản Phẩm\n\n", titleFont)
                     {
                         Alignment = Element.ALIGN_CENTER
                     };
                     document.Add(title);
 
-                    // Tạo bảng PDF
-                    var table = new PdfPTable(5) { WidthPercentage = 100 }; // 5 cột
-                    table.SetWidths(new float[] { 2, 3, 2, 1, 1 }); // Đặt tỷ lệ chiều rộng cột
+                    // Bảng 5 cột
+                    var table = new PdfPTable(5) { WidthPercentage = 100 };
+                    table.SetWidths(new float[] { 2, 3, 2, 2, 2 });
 
-                    // Thêm tiêu đề các cột với màu nền
-                    var headerBackgroundColor = new BaseColor(0, 102, 204); // Màu xanh
-                    var headers = new[] { "Tên sản phẩm", "Hình ảnh", "Giá", "Danh mục", "Thương hiệu" };
-                    foreach (var header in headers)
+                    // Header
+                    var headerBackground = new BaseColor(0, 102, 204);
+                    var headers = new[] { "Tên sản phẩm", "Hình ảnh", "Giá (VNĐ)", "Danh mục", "Thương hiệu" };
+
+                    foreach (var h in headers)
                     {
-                        var cell = new PdfPCell(new Phrase(header, headerFont))
+                        var cell = new PdfPCell(new Phrase(h, headerFont))
                         {
-                            BackgroundColor = headerBackgroundColor,
+                            BackgroundColor = headerBackground,
                             HorizontalAlignment = Element.ALIGN_CENTER,
                             Padding = 5
                         };
                         table.AddCell(cell);
                     }
 
-                    // Điền dữ liệu vào bảng
-                    foreach (var product in products)
+                    // Dữ liệu
+                    foreach (var p in products)
                     {
-                        table.AddCell(new PdfPCell(new Phrase(product.Name ?? "", textFont))
+                        // Tên sản phẩm
+                        table.AddCell(new PdfPCell(new Phrase(p.Name ?? "", textFont)) { Padding = 5 });
+
+                        // Hình ảnh
+                        try
                         {
-                            Padding = 5,
-                            HorizontalAlignment = Element.ALIGN_LEFT
-                        });
-                        table.AddCell(new PdfPCell(new Phrase(product.Image ?? "", textFont))
+                            string imagePath = Server.MapPath("~/content/img/items/" + p.Image);
+
+                            if (!string.IsNullOrEmpty(p.Image) && System.IO.File.Exists(imagePath))
+                            {
+                                var img = iTextSharp.text.Image.GetInstance(imagePath);
+                                img.ScaleToFit(70f, 70f);
+                                var imgCell = new PdfPCell(img, true)
+                                {
+                                    HorizontalAlignment = Element.ALIGN_CENTER,
+                                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                                    Padding = 5
+                                };
+                                table.AddCell(imgCell);
+                            }
+                            else
+                            {
+                                table.AddCell(new PdfPCell(new Phrase("Không có ảnh", textFont))
+                                { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER });
+                            }
+                        }
+                        catch
                         {
-                            Padding = 5,
-                            HorizontalAlignment = Element.ALIGN_LEFT
-                        });
-                        table.AddCell(new PdfPCell(new Phrase(product.Price.ToString("C2"), textFont))
+                            table.AddCell(new PdfPCell(new Phrase("Lỗi ảnh", textFont))
+                            { Padding = 5, HorizontalAlignment = Element.ALIGN_CENTER });
+                        }
+
+                        // Giá (format sang VNĐ)
+                        string giaVND = string.Format("{0:#,##0} VNĐ", p.Price);
+                        table.AddCell(new PdfPCell(new Phrase(giaVND, textFont))
                         {
                             Padding = 5,
                             HorizontalAlignment = Element.ALIGN_RIGHT
                         });
-                        table.AddCell(new PdfPCell(new Phrase(product.CategoryId.ToString(), textFont))
+
+                        // Danh mục (tên thay vì ID)
+                        table.AddCell(new PdfPCell(new Phrase(p.Category?.Name ?? "Không có", textFont))
                         {
                             Padding = 5,
                             HorizontalAlignment = Element.ALIGN_CENTER
                         });
-                        table.AddCell(new PdfPCell(new Phrase(product.BrandId.ToString(), textFont))
+
+                        // Thương hiệu (tên thay vì ID)
+                        table.AddCell(new PdfPCell(new Phrase(p.Brand?.Name ?? "Không có", textFont))
                         {
                             Padding = 5,
                             HorizontalAlignment = Element.ALIGN_CENTER
@@ -392,9 +426,7 @@ namespace VoPhanKhaHy_CDTT.Areas.Admin.Controllers
                     document.Add(table);
                     document.Close();
 
-                    // Trả file PDF về dưới dạng byte
-                    var fileContent = stream.ToArray();
-                    return File(fileContent, "application/pdf", "Products.pdf");
+                    return File(stream.ToArray(), "application/pdf", "Products.pdf");
                 }
             }
             catch (Exception ex)

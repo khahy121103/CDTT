@@ -78,7 +78,7 @@
                         </div> <!-- col.// -->
                         <div class="col-md d-none d-lg-block flex-grow-1">
                             <aside class="special-home-right">
-                                <h6 class="bg-blue text-center text-white mb-0 p-2">Danh mục phổ biến</h6>
+                                <h6 class="bg-blue text-center text-white mb-0 p-2">Thương hiệu phổ biến</h6>
                                 @foreach (var item in Model.ListCategory.Where(n => n.ShowOnHomePage == true).Take(3))
                                 {
                                     <div class="card-banner border-bottom">
@@ -147,7 +147,7 @@
                     <div class="row no-gutters">
                         <div class="col-md-3">
 
-                            <div class="home-category-banner bg-light-orange">
+                            <div class="home-category-banner bg-light-orange"> 
                                 
                                 <img src="~/content/img/items/@brand.Image" class="img-bg">
                             </div>
@@ -160,9 +160,10 @@
                                         <a href="@Url.Action("Detail", "Product", new { Id = item.Id })" class="item">
 
                                             <div class="card-body">
-                                                <h6 class="title">@item.ShortDes  </h6>
+                                                @Html.ActionLink(item.Name, "Detail", "Product", new { Id = item.Id }, null)
+
                                                 <img class="img-sm float-right" src="~/content/img/items/@item.Image">
-                                                <p class="text-muted"><i class="fa fa-map-marker-alt"></i> Guanjou, China</p>
+                                                <p class="text-muted">@item.ShortDes</p>
                                             </div>
                                         </a>
                                     </li>
@@ -256,7 +257,7 @@
                                 @Html.ActionLink(item.Name, "Detail", "Product", new { Id = item.Id }, null)
                                 <div class="price mt-1">@string.Format("{0:N0} VNĐ", item.Price)</div> <!-- price-wrap.// -->
                             </figcaption>
-                        </div>
+                        </div>  
                     </div> <!-- col.// -->
                 }
 

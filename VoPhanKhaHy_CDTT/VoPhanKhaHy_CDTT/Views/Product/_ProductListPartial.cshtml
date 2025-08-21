@@ -1,0 +1,23 @@
+﻿@model List<VoPhanKhaHy_CDTT.Context.Product>
+
+@foreach (var item in Model)
+{
+    <div class="col-md-3">
+        <figure class="card card-product-grid">
+            <div class="img-wrap">
+                <span class="badge badge-danger">MỚI</span>
+                <img src="~/content/img/items/@item.Image" alt="@item.Name" />
+            </div>
+            <figcaption class="info-wrap">
+                <a href="@Url.Action("Detail", "Product", new { Id = item.Id })" class="title mb-2">@item.Name</a>
+                <div class="price-wrap">
+                    <span class="price">@item.Price VNĐ</span>
+                    <small class="text-muted">/sản phẩm</small>
+                </div>
+                <a class="btn btn-primary addtocart" data-id="@item.Id">
+                    <i class="fas fa-shopping-cart"></i> <span class="text">Thêm vào giỏ</span>
+                </a>
+            </figcaption>
+        </figure>
+    </div>
+}

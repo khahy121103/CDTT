@@ -6,20 +6,29 @@
 <script type="text/javascript">
     $(function () {
         $("#addtocart").click(function () {
+
+            var isLoggedIn = '@(Session["idUser"] != null ? "true" : "false")';
+
+            if (isLoggedIn !== "true") {
+                alert("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
+                window.location.href = '@Url.Action("Login", "Home")';
+                return false;
+            }
+
             var model = {};
             // lấy id sản phẩm
             model.Id = @Model.Id;
             // lấy số lượng đặt hàng
             model.Quantity = $("#ipQuantity").val();
-            debugger;
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddToCart", "Cart")',
-                data:  JSON.stringify(model) ,
+                data: JSON.stringify(model),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function () {
-                    alert("Thêm vào giỏ hàng thành công!")
+                    alert("Thêm vào giỏ hàng thành công!");
                     $('#CartCount').text(@Session["count"] + 1);
                 },
                 error: function () {

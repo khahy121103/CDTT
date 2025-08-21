@@ -261,5 +261,6 @@ namespace VoPhanKhaHy_CDTT.Controllers
                 return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
     }
 }

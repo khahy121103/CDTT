@@ -10,23 +10,33 @@
             var model = {};
             // Lấy id sản phẩm từ thuộc tính data-id
             model.Id = $(this).data("id");
-            // Lấy số lượng đặt hàng
+            // Mặc định số lượng là 1
             model.Quantity = 1;
-            debugger;
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddToCart", "Cart")',
                 data: JSON.stringify(model),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: function () {
-                    toastr.success("Thêm giỏ hàng thành công!");
-                    $('#CartCount').text(parseInt($('#CartCount').text()) + 1);
+                success: function (res) {
+                    if (res.success) {
+                        toastr.success(res.message);
+                        // ✅ cập nhật số lượng giỏ hàng chính xác từ server
+                        $('#CartCount').text(res.count);
+                    } else {
+                        toastr.warning(res.message);
+                        if (res.message.includes("đăng nhập")) {
+                            // Nếu chưa đăng nhập thì chuyển hướng tới Login
+                            window.location.href = '@Url.Action("Login", "Home")';
+                        }
+                    }
                 },
                 error: function () {
-                    toastr.error("Lỗi trong khi thêm vào giỏ hàng!");
+                    toastr.error("Có lỗi xảy ra khi thêm vào giỏ hàng!");
                 }
             });
+
             return false;
         });
     });
@@ -123,7 +133,7 @@
                     <a href="@Url.Action("Grid", "Home", new { @Id = ViewBag.CurrentCategoryId })" class="btn btn-light active" data-toggle="tooltip" title="Grid view">
                         <i class="fa fa-bars"></i>
                     </a>
-                    <a href="@Url.Action("Large", "Home", new { @Id = ViewBag.CurrentCategoryId })" class="btn btn-light" data-toggle="tooltip" title="Large view">
+                    <a href="@Url.Action("Large/0", "Home", new { @Id = ViewBag.CurrentCategoryId })" class="btn btn-light" data-toggle="tooltip" title="Large view">
                         <i class="fa fa-th"></i>
                     </a>
                 </div>

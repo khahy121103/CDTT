@@ -5,29 +5,38 @@
 <script type="text/javascript">
     $(function () {
         // Gắn sự kiện click vào tất cả các nút có class "addtocart"
-        $(".addtocart").click(function () {
-            var model = {};
-            // Lấy id sản phẩm từ thuộc tính data-id
-            model.Id = $(this).data("id");
-            // Lấy số lượng đặt hàng
-            model.Quantity = 1;
-            debugger;
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("AddToCart", "Cart")',
-                data: JSON.stringify(model),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function () {
-                    toastr.success("Thêm giỏ hàng thành công!");
-                    $('#CartCount').text(parseInt($('#CartCount').text()) + 1);
-                },
-                error: function () {
-                    toastr.error("Lỗi trong khi thêm vào giỏ hàng!");
-                }
-            });
-            return false;
-        });
+       $("#addtocart").click(function () {
+
+    var isLoggedIn = '@(Session["idUser"] != null ? "true" : "false")';
+
+    if (isLoggedIn !== "true") {
+        alert("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
+        window.location.href = '@Url.Action("Login", "Home")';
+        return false;
+    }
+
+    var model = {};
+    // lấy id sản phẩm
+    model.Id = @Model.Id;
+    // lấy số lượng đặt hàng
+    model.Quantity = $("#ipQuantity").val();
+
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("AddToCart", "Cart")',
+        data: JSON.stringify(model),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function () {
+            alert("Thêm vào giỏ hàng thành công!");
+            $('#CartCount').text(@Session["count"] + 1);
+        },
+        error: function () {
+            alert("Lỗi khi thêm vào giỏ hàng!");
+        }
+    });
+    return false;
+});
     });
 </script>
 
@@ -223,7 +232,7 @@
                             <aside class="col-md-3">
                                 <a href="#" class="img-wrap">
                                     <span class="badge badge-danger"> NEW </span>
-                                    <img src="~/content/images/items/@item.Image">
+                                    <img src="~/content/img/items/@item.Image">
                                 </a>
                             </aside> <!-- col.// -->
                             <div class="col-md-6">
