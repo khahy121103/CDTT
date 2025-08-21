@@ -3,19 +3,31 @@
   "WorkspaceRootPath": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|d:\\desktop\\cdtt\\vophankhahy_cdtt\\vophankhahy_cdtt\\models\\payment\\vnpaylibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\models\\payment\\vnpaylibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\areas\\admin\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\areas\\admin\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|d:\\desktop\\cdtt\\vophankhahy_cdtt\\vophankhahy_cdtt\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|d:\\desktop\\cdtt\\vophankhahy_cdtt\\vophankhahy_cdtt\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\areas\\admin\\controllers\\brandcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\areas\\admin\\controllers\\brandcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\models\\payment\\vnpaylibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\models\\payment\\vnpaylibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
@@ -27,7 +39,7 @@
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|d:\\desktop\\cdtt\\vophankhahy_cdtt\\vophankhahy_cdtt\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
@@ -43,16 +55,8 @@
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\context\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|d:\\desktop\\cdtt\\vophankhahy_cdtt\\vophankhahy_cdtt\\areas\\admin\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\areas\\admin\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\areas\\admin\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\areas\\admin\\controllers\\brandcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\areas\\admin\\controllers\\brandcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\areas\\admin\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\areas\\admin\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\areas\\admin\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -101,10 +105,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\context\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\context\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|solutionrelative:vophankhahy_cdtt\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{86B90F99-5771-4FAB-8E8B-3F26A6B8E56B}|VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT.csproj|D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\vophankhahy_cdtt\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -259,71 +259,105 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAAABYAAABSAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-17T14:01:31.544Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Cart\\Index.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Cart\\Index.cshtml",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Cart\\Index.cshtml",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Cart\\Index.cshtml",
-              "ViewState": "AgIAAH4AAAAAAAAAAAAAAHEDAABnAAAAAAAAAA==",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Cart\\Index.cshtml*",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Cart\\Index.cshtml*",
+              "ViewState": "AgIAAFoDAAAAAAAAAAAAAHQDAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-08-11T07:29:12.462Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Order.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Context\\Order.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Context\\Order.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Context\\Order.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Context\\Order.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T05:31:54.605Z",
-              "EditorCaption": ""
+              "DocumentIndex": 11,
+              "Title": "_ListBrand.cshtml",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAFkAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T08:10:46.699Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "ProductController.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Title": "VnPayLibrary.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T07:38:39.106Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-19T07:37:18.884Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CartModel.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T05:38:48.16Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Detail.cshtml",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAAAHEAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T07:38:11.825Z",
+              "Title": "BrandController.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAuwLsAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-12T08:11:09.401Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Controllers\\CartController.cs",
+              "ViewState": "AgIAAGYCAAAAAAAAAAAAACoBAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-17T14:01:31.544Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAAAC0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-17T14:50:28.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAADABAAAAAAAAAAAowMkAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-17T13:32:16.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Web.config",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Web.config",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Web.config",
@@ -336,46 +370,43 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "_ListBrand.cshtml",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Brand\\_ListBrand.cshtml",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAFkAAABGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-12T08:10:46.699Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "VnPayLibrary.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Models\\Payment\\VnPayLibrary.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-19T07:37:18.884Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "CartModel.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Models\\CartModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T05:38:48.16Z",
-              "EditorCaption": ""
+              "Title": "Detail.cshtml",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Product\\Detail.cshtml",
+              "ViewState": "AgIAAEYAAAAAAAAAAMBtwHEAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-11T07:38:11.825Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 8,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T07:38:39.106Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Order.cs",
+              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Context\\Order.cs",
+              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Context\\Order.cs",
+              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Context\\Order.cs",
+              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Context\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T05:31:54.605Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Shared\\_Layout.cshtml",
@@ -383,12 +414,11 @@
               "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAHcBAAAAAAAAAAAAAKIBAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T07:47:18.085Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-11T07:47:18.085Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "Web.config",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Web.config",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Web.config",
@@ -396,24 +426,11 @@
               "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Web.config",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-08-19T08:16:27.549Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-19T08:16:27.549Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "BrandController.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\BrandController.cs",
-              "ViewState": "AgIAAKEAAAAAAAAAAADwv60AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-12T08:11:09.401Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "CategoryController.cs",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\CategoryController.cs",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\CategoryController.cs",
@@ -425,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Controllers\\HomeController.cs",
@@ -437,19 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ProductController.cs",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\ProductController.cs",
-              "ViewState": "AgIAAB0CAAAAAAAAAAAIwCECAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-17T13:32:16.547Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Home\\Index.cshtml",
@@ -461,7 +466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Controllers\\HomeController.cs",
@@ -473,7 +478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Category\\Index.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Category\\Index.cshtml",
@@ -485,7 +490,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Product\\Edit.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Product\\Edit.cshtml",
@@ -497,7 +502,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Product\\Create.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Areas\\Admin\\Views\\Product\\Create.cshtml",
@@ -509,7 +514,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "Login.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Home\\Login.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Home\\Login.cshtml",
@@ -517,34 +522,31 @@
               "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Home\\Login.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAByAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T07:11:15.243Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-11T07:11:15.243Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Home\\Index.cshtml",
               "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAL8AAAAAAAAAAMBdwL4AAAB3AAAAAAAAAA==",
+              "ViewState": "AgIAALcAAAAAAAAAAOBvwL4AAAB3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T07:13:45.291Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-11T07:13:45.291Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAEBAAAAAAAAAHCIwBgBAAByAAAAAAAAAA==",
+              "ViewState": "AgIAAPIAAAAAAAAAADSQwBgBAAByAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-11T07:48:06.017Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-11T07:48:06.017Z"
             },
             {
               "$type": "Document",
@@ -560,7 +562,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "Error.cshtml",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Shared\\Error.cshtml",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Shared\\Error.cshtml",
@@ -585,19 +587,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 25,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
-              "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
-              "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
-              "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Order\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-17T14:50:28.591Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Context\\User.cs",
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Context\\User.cs",
@@ -807,7 +796,7 @@
               "RelativeDocumentMoniker": "VoPhanKhaHy_CDTT\\Views\\Home\\Grid.cshtml",
               "ToolTip": "D:\\Desktop\\CDTT\\VoPhanKhaHy_CDTT\\VoPhanKhaHy_CDTT\\Views\\Home\\Grid.cshtml",
               "RelativeToolTip": "VoPhanKhaHy_CDTT\\Views\\Home\\Grid.cshtml",
-              "ViewState": "AgIAAJ0AAAAAAAAAAFiPwI0AAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAJAAAAAAAAAAACCTwI0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-08-12T08:48:05.193Z"
             },

@@ -81,7 +81,7 @@
 
                     <div class="mb-3">
                         <var class="price h4"></var>
-                        <span class="text-muted">@Model.Price đã bao gồm thuế</span>
+                        <span class="text-muted">@string.Format("{0:N0}", Model.Price) VNĐ đã bao gồm thuế</span>
                     </div>
                     <dl class="row">
                         <dt class="col-sm-3">Nhà sản xuất</dt>
@@ -215,24 +215,4 @@
         </div>
 </section>
 
-<section class="padding-y-lg bg-light border-top">
-    <div class="container">
 
-        <p class="pb-2 text-center">Cập nhật những xu hướng sản phẩm mới nhất và tin tức ngành nghề trực tiếp vào hộp thư của bạn</p>
-
-        <div class="row justify-content-md-center">
-            <div class="col-lg-4 col-sm-6">
-                <form class="form-row">
-                    <div class="col-8">
-                        <input class="form-control" placeholder="Email của bạn" type="email">
-                    </div>
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-block btn-warning"> <i class="fa fa-envelope"></i> Đăng ký </button>
-                    </div>
-                </form>
-                <small class="form-text">Chúng tôi sẽ không bao giờ chia sẻ email của bạn với bên thứ ba. </small>
-            </div>
-        </div>
-
-    </div>
-</section>

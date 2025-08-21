@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
     // Tạo mã đơn hàng động với định dạng KHY + timestamp (14 chữ số)
-    let currentOrderDescription = "KHY" + new Date().getTime().toString().padStart(14, '0');
+    let currentOrderDescription = "KHY" + new Date().getDate();
 
     $(function () {
         // Khởi tạo sự kiện khi trang được tải
@@ -325,12 +325,12 @@
      * Kiểm tra trạng thái thanh toán bằng mô tả đơn hàng
      */
     function checkPayment(orderDescription) {
-        const checkUrl = "https://script.google.com/macros/s/AKfycbz3Y5Hd0Uq4-47aDFzhp31rFucyPCnjG5jYhQPIY4GY_0yGUu49shkBkaIcYGVe4wDQjA/exec";
+        const checkUrl = "https://script.google.com/macros/s/AKfycbyZWsFXTbI8zwuAQCe-eWLPZ_zMyMLwPRjN_lIjLp1T3or8wU5h2qUm3vJyBmimMGQUeg/exec";
         let interval;
 
         $("#qrModal").on("shown.bs.modal", function () {
             interval = setInterval(function () {
-                $.getJSON(checkUrl, function (response) {
+                $.getJSON(checkUrl + "?orderDescription=" + orderDescription, function (response) {
                     const rows = response.data || [];
                     rows.forEach((row) => {
                         const extractedCode = row.description?.match(/KHY\d+/)?.[0] || "";
@@ -853,7 +853,7 @@
                                         </td>
                                         <td>
                                             <div class="price-wrap">
-                                                <var class="price">@item.Product.Price</var>
+                                                <var class="price">@string.Format("{0:N0}", item.Product.Price) VNĐ</var>
                                             </div> <!-- price-wrap .// -->
                                         </td>
                                         <td class="text-right">
@@ -876,12 +876,11 @@
                             }
                         </tbody>
                     </table>
-
                     <div class="card-body border-top">
                         <div class="float-md-right">
-                                                    <a id="vnpayPayment" class="btn btn-warning mr-2"> 
+                        @*<a id="vnpayPayment" class="btn btn-warning mr-2"> 
                             <i class="fa fa-credit-card"></i> Thanh toán VNPay 
-                        </a>
+                        </a>*@
                         <a id="generateQR" class="btn btn-primary mr-2"> 
                             <i class="fa fa-qrcode"></i> Thanh toán QR 
                         </a>

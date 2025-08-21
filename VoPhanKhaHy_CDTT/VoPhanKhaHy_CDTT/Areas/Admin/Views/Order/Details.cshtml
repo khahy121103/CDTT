@@ -87,8 +87,8 @@
                                 <tr>
                                     <td>@item.ProductName</td>
                                     <td>@item.Quantity</td>
-                                    <td>@String.Format("{0:C}", item.Price)</td>
-                                    <td>@String.Format("{0:C}", item.TotalPrice)</td>
+                                    <td>@item.Price.ToString("#,##0", new System.Globalization.CultureInfo("vi-VN")) VNĐ</td>
+                                    <td>@item.TotalPrice.ToString("#,##0", new System.Globalization.CultureInfo("vi-VN")) VNĐ</td>
                                 </tr>
                             }
                         </tbody>

@@ -254,7 +254,7 @@
                             <a href="@Url.Action("Detail", "Product", new {Id=item.Id})" class="img-wrap"> <img src="~/content/img/items/@item.Image"> </a>
                             <figcaption class="info-wrap">
                                 @Html.ActionLink(item.Name, "Detail", "Product", new { Id = item.Id }, null)
-                                <div class="price mt-1">@item.Price</div> <!-- price-wrap.// -->
+                                <div class="price mt-1">@string.Format("{0:N0} VNĐ", item.Price)</div> <!-- price-wrap.// -->
                             </figcaption>
                         </div>
                     </div> <!-- col.// -->
